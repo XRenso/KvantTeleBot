@@ -9,9 +9,12 @@ import codecs
 import sys
 import requests
 
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 token = config.token
 client = telebot.TeleBot(config.token)
-events = None #Текст мероприятий
+events = '21'#Текст мероприятий
 text_ejtiejteite = 'https://t.me/XRenso'		
 
 admin_list = [483058216]
