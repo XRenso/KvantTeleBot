@@ -8,7 +8,11 @@ import shutil
 import codecs
 import sys
 import requests
-
+import feedparser
+from datetime import timedelta, datetime
+from dateutil import parser
+from pprint import pprint
+from time import sleep
 #тех.работы
 text_tech_work_false = 'Объявить тех.работы'
 text_tech_work_true = 'Закончить тех.работы'
@@ -21,6 +25,11 @@ text_full_info_about_kvantorium_65 = '📜Общая информация про
 text_full_info_about_kvantorium_65_text = 'Привет👋, наш КванториУМ самый первый🥇 на острове Сахалин, вы представляете?! Это же круто быть одними из первых, мы с открытия (2017 год) обучаем детей и помогаем им узнавать новое в жизни. У нас имеется 7 КвантУМов, много разных педагогов с которыми вы сможете приятно провести время за обучением.'
 token = config.token
 client = telebot.TeleBot(config.token)
+
+
+#RSS
+FEED_URL = 'https://www.feedforall.com/sample.xml'
+
 events = None#Текст мероприятий
 text_ejtiejteite = 'https://t.me/XRenso'		
 
@@ -28,9 +37,35 @@ admin_list = [483058216]
 admin = False
 #MR- свод основных комманд и пунктов
 #MR2 - строго обрабатывать действия пользователя связанных с админ доступом
+def main():
+    rss_feed = feedparser.parse(FEED_URL)
+
+    for entry in rss_feed.entries:
+
+        parsed_date = parser.parse(entry.published)
+        parsed_date = (parsed_date - timedelta(hours=8)).replace(tzinfo=None) # remove timezone offset
+        now_date = datetime.utcnow()
+
+        published_20_minutes_ago = now_date - parsed_date < timedelta(minutes=20)
+        if published_20_minutes_ago:
+            client.send_message(chat.id,entry.links[0].href)
+            print(entry.links[0].href)
+
+if __name__ == "__main__":
+	    while(True):
+	        main()
+	        sleep(100)       
+
+
+
 @client.message_handler(commands = ['start'])
 def get_user_info(message):
 	global admin
+
+
+	
+		
+
 	if message.chat.id in admin_list:
 		client.send_message(message.chat.id, 'У вас есть права администратора')
 		admin = True
