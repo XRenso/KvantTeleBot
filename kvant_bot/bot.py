@@ -329,7 +329,7 @@ def get_text (message):
 				markup_reply.row (item_main_menu)
 
 				client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
-			elif message.text == text_tech_work_true  and tech_work == False:
+			elif message.text == text_tech_work_true:
 				tech_work = False
 				client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
 			
