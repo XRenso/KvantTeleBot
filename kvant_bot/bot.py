@@ -63,6 +63,7 @@ def save_music(message):
 def get_text (message):
 	global events
 	global admin
+	global tech_work
 	admin = False
 	if message.chat.id in admin_list:
 			admin = True
