@@ -9,6 +9,9 @@ import codecs
 import sys
 import requests
 
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 token = config.token
 client = telebot.TeleBot(config.token)
 events = '21'#Текст мероприятий
