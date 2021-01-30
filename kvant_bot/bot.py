@@ -235,10 +235,7 @@ def get_text (message):
 			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
 			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-			if tech_work == False:
-				item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
-			elif tech_work == True:
-				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+			item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
 			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
 			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
@@ -261,7 +258,7 @@ def get_text (message):
 
 				)
 
-		if admin == True:
+		elif admin == True:
 			if message.text == '↩️На главное меню ↪️':
 				markup_inline = types.InlineKeyboardMarkup()
 				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
@@ -277,17 +274,25 @@ def get_text (message):
 				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-				if tech_work == False:
-					item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
-				elif tech_work == True:
-					item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+
+				
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
+
+
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
+
 				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
+
 				markup_reply.row(item_send_message, item_delete_events)
+
 				markup_reply.row(item_music_control)
+
 				markup_reply.row(item_go_on_tech_work)
+
 				markup_reply.row (item_main_menu)
+
 			elif message.text == '❌ Удалить музыку ❌' :
 				markup_inline = types.InlineKeyboardMarkup()
 
@@ -316,9 +321,7 @@ def get_text (message):
 			elif message.text == '🎶 Добавить музыку 🎶' :
 				write_event = client.send_message(message.chat.id, 'Отправляйте музыку для подборки' )
 				client.register_next_step_handler(write_event, save_music)
-			elif message.text == text_tech_work_false  and tech_work == False:
-				tech_work = True
-				client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
+			
 			elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
 				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
