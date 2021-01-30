@@ -51,7 +51,9 @@ def hello(message):
 
 def save_music(message):
 	file_info = client.get_file(message.audio.file_id)
-	file = requests.get('https://api.telegram.org/file/bot{0}/{1}'.format(token, file_info.file_path))
+	headers = requests.utils.default_headers()
+	headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+	file = requests.get('https://api.telegram.org/file/bot{0}/{1}'.format(token, file_info.file_path), headers=headers)
 
 	with open(file_info.file_id,'wb') as f:
 		f.write(file.content)
