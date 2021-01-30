@@ -220,10 +220,12 @@ def get_text (message):
 
 			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
 			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+			item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
 			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
 			markup_reply.row(item_send_message, item_delete_events)
 			markup_reply.row(item_music_control)
+			markup_reply.row(item_go_on_tech_work)
 			markup_reply.row (item_main_menu)
 
 			client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
@@ -269,28 +271,18 @@ def get_text (message):
 
 				)
 
-			elif message.text == 'Админ Панель' :
+			elif message.text == 'Админ Панель' and admin == True:
 
 				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-
-				
-				item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
-
-
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
-
 				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
-
 				markup_reply.row(item_send_message, item_delete_events)
-
 				markup_reply.row(item_music_control)
-
 				markup_reply.row(item_go_on_tech_work)
-
 				markup_reply.row (item_main_menu)
 
 			elif message.text == '❌ Удалить музыку ❌' :
@@ -327,10 +319,12 @@ def get_text (message):
 
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
 				markup_reply.row(item_send_message, item_delete_events)
 				markup_reply.row(item_music_control)
+				markup_reply.row(item_go_on_tech_work)
 				markup_reply.row (item_main_menu)
 
 				client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
