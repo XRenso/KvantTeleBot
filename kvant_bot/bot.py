@@ -252,15 +252,25 @@ def get_text (message):
 		if admin == False:
 			client.send_message(message.chat.id, text_tech_work_for_users)
 		elif message.text == '↩️На главное меню ↪️':
-			markup_inline = types.InlineKeyboardMarkup()
-			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
-			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
+				markup_inline = types.InlineKeyboardMarkup()
+				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
+				markup_inline.add(item_yes, item_no)
+				client.send_message(message.chat.id,  'Вы точно хотите вернутся на главное меню?',
+				reply_markup = markup_inline
+
+				)
 
 		if admin == True:
 			if message.text == '↩️На главное меню ↪️':
 				markup_inline = types.InlineKeyboardMarkup()
 				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
 				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
+				markup_inline.add(item_yes, item_no)
+				client.send_message(message.chat.id,  'Вы точно хотите вернутся на главное меню?',
+				reply_markup = markup_inline
+
+				)
 
 			elif message.text == 'Админ Панель' :
 
