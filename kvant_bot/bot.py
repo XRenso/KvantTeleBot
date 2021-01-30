@@ -37,24 +37,7 @@ admin_list = [483058216]
 admin = False
 #MR- свод основных комманд и пунктов
 #MR2 - строго обрабатывать действия пользователя связанных с админ доступом
-def main():
-    rss_feed = feedparser.parse(FEED_URL)
-
-    for entry in rss_feed.entries:
-
-        parsed_date = parser.parse(entry.published)
-        parsed_date = (parsed_date - timedelta(hours=8)).replace(tzinfo=None) # remove timezone offset
-        now_date = datetime.utcnow()
-
-        published_20_minutes_ago = now_date - parsed_date < timedelta(minutes=20)
-        if published_20_minutes_ago:
-            client.send_message(chat.id,entry.links[0].href)
-            print(entry.links[0].href)
-
-if __name__ == "__main__":
-	    while(True):
-	        main()
-	        sleep(100)       
+  
 
 
 
