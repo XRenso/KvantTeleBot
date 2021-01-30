@@ -151,7 +151,7 @@ def get_text (message):
 				if music_count > 0:
 					client.send_message(message.chat.id, 'Вот наша подборка)')
 					for file in os.listdir('music/'):
-						if file.split('.')[-1] == 'mp3' || file.split('.')[-1] == 'ogg':
+						if file.split('.')[-1] == 'mp3' or file.split('.')[-1] == 'ogg':
 							
 
 							audio = open('music/' + file, 'rb')
