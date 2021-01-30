@@ -14,7 +14,7 @@ import requests
 
 token = config.token
 client = telebot.TeleBot(config.token)
-events = '21'#Текст мероприятий
+events = None#Текст мероприятий
 text_ejtiejteite = 'https://t.me/XRenso'		
 
 admin_list = [483058216]
