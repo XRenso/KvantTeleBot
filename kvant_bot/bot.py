@@ -142,18 +142,24 @@ def get_text (message):
 
 			)
 		elif message.text == '🎵Подборка музыки от КванториУМа🎵':
+			check_file = os.path.exists('music')
 			path = './music'
 			music_count = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
-			if music_count > 0:
-				client.send_message(message.chat.id, 'Вот наша подборка)')
-				for file in os.listdir('music/'):
-					if file.split('.')[-1] == 'mp3':
-						
+			if check_file == True:
+				if music_count > 0:
+					client.send_message(message.chat.id, 'Вот наша подборка)')
+					for file in os.listdir('music/'):
+						if file.split('.')[-1] == 'mp3' || file.split('.')[-1] == 'ogg':
+							
 
-						audio = open('music/' + file, 'rb')
-						client.send_audio(message.chat.id, audio)	
-			else:
-				client.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
+							audio = open('music/' + file, 'rb')
+							client.send_audio(message.chat.id, audio)	
+				elif music_count < 0:
+					client.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
+			elif check_file == False:
+				path = './music/'
+				client.send_message(call.message.chat.id, 'Музыка отсутвует😥')
+				os.mkdir(path)
 
 
 
