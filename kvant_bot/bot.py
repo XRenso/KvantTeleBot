@@ -259,7 +259,7 @@ def get_text (message):
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
 				if tech_work == False:
 					item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
-				else if tech_work == True:
+				elif tech_work == True:
 					item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
