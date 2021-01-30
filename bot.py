@@ -9,12 +9,16 @@ import codecs
 import sys
 import requests
 
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#тех.работы
+text_tech_work_false = 'Объявить тех.работы'
+text_tech_work_true = 'Закончить тех.работы'
+tech_work = False
+text_tech_work_for_users = 'Бот сейчас на тех.работах'
+
 
 token = config.token
 client = telebot.TeleBot(config.token)
-events = '21'#Текст мероприятий
+events = None#Текст мероприятий
 text_ejtiejteite = 'https://t.me/XRenso'		
 
 admin_list = [483058216]
@@ -74,168 +78,242 @@ def get_text (message):
 	item_net = types.InlineKeyboardButton(text = 'Сайт🌎',url= text_site)
 
 	#MR1 - логика кнопок(любое местко где кнопки отправляют текст нужно чтобы они соотвествовали данным)
+	if tech_work == False:
+		if message.text == 	'Номер тех.поддержки 📞':
+			client.send_message(message.chat.id, number_reception)
 
-	if message.text == 	'Номер тех.поддержки 📞':
-		client.send_message(message.chat.id, number_reception)
+		elif message.text == 'Мы в соц.сетях 📱':
+			markup_inline.add(item_inst, item_net)
+			client.send_message(message.chat.id, 'Выберите тип соц.сети', reply_markup = markup_inline)
 
-	elif message.text == 'Мы в соц.сетях 📱':
-		markup_inline.add(item_inst, item_net)
-		client.send_message(message.chat.id, 'Выберите тип соц.сети', reply_markup = markup_inline)
+		elif message.text == '🎟️ МЕРОПРИЯТИЕ 🎟️':
+			success = True # успех изначально равен Правде чтобы не было проблем
+			ready = False # готовность чтобы код не выполнялся паралелльно
+			try:
+				f = open('events.txt')
+				f.close()
+				ready = False #готовность равна лже т.к комманда только выполняется и ошибка не перехвачена
 
-	elif message.text == '🎟️ МЕРОПРИЯТИЕ 🎟️':
-		success = True # успех изначально равен Правде чтобы не было проблем
-		ready = False # готовность чтобы код не выполнялся паралелльно
-		try:
-			f = open('events.txt')
-			f.close()
-			ready = False #готовность равна лже т.к комманда только выполняется и ошибка не перехвачена
+			except  IOError:
+				print('unsucces')
+				success = False #перехват ошибки 
+			finally:
 
-		except  IOError:
-			print('unsucces')
-			success = False #перехват ошибки 
-		finally:
+				ready = True #и если всё таки удалось найти файл, то его открываем
 
-			ready = True #и если всё таки удалось найти файл, то его открываем
+			if success == True and ready == True: #если успех равен првде и готовность, то мы открываем и берём событие
+				
+				f = codecs.open('events.txt','r', 'utf_8_sig' )
 
-		if success == True and ready == True: #если успех равен првде и готовность, то мы открываем и берём событие
+				fd = f.read()
+				
+				client.send_message(message.chat.id, fd.encode().decode('utf-8'))
+
+
+			elif success == False and ready == True: # если успех равен лжи, а код готов, то бот пишет что нет событий
+				client.send_message(message.chat.id, 'Сейчас нет каких либо мероприятий😥')
+
+		elif message.text == '↩️На главное меню ↪️':
+			markup_inline = types.InlineKeyboardMarkup()
+			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
+
+
+			markup_inline.add(item_yes, item_no)
+			client.send_message(message.chat.id,  'Вы точно хотите вернутся на главное меню?',
+			reply_markup = markup_inline
+
+			)
+		elif message.text == '⚒️Написать событие ⚒️' and admin == True:
 			
-			f = codecs.open('events.txt','r', 'utf_8_sig' )
+			write_event = client.send_message(message.chat.id, 'Введите ваше мероприятие/событие:' )
+			client.register_next_step_handler(write_event, hello)
+		elif message.text == '🚫Удалить события🚫' and admin == True:
+			markup_inline = types.InlineKeyboardMarkup()
 
-			fd = f.read()
+			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
+
+
+			markup_inline.add(item_yes, item_no)
+			client.send_message(message.chat.id,  'Вы уверены?🤔', 
+			reply_markup = markup_inline
+
+			)
+		elif message.text == '🎵Подборка музыки от КванториУМа🎵':
+			path = './music'
+			music_count = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
+			if music_count > 0:
+				client.send_message(message.chat.id, 'Вот наша подборка)')
+				for file in os.listdir('music/'):
+					if file.split('.')[-1] == 'mp3':
+						
+
+						audio = open('music/' + file, 'rb')
+						client.send_audio(message.chat.id, audio)	
+			else:
+				client.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
+
+
+
 			
-			client.send_message(message.chat.id, fd.encode().decode('utf-8'))
 
 
-		elif success == False and ready == True: # если успех равен лжи, а код готов, то бот пишет что нет событий
-			client.send_message(message.chat.id, 'Сейчас нет каких либо мероприятий😥')
+		elif message.text == 'Информация о Кванториум - Сахалин ℹ️':
 
-	elif message.text == '↩️На главное меню ↪️':
-		markup_inline = types.InlineKeyboardMarkup()
-		item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
-		item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
+			keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
+			item_own_info = types.KeyboardButton('Общая информация про КванториУМ65.')
+			item_kvants = types.KeyboardButton('КвантУМы')
+			item_event = types.KeyboardButton('🎟️ МЕРОПРИЯТИЕ 🎟️')
+			item_music = types.KeyboardButton('🎵Подборка музыки от КванториУМа🎵')
+			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
 
+			
+			keyboard.row(item_own_info)
+			keyboard.row(item_kvants, item_event)
+			keyboard.row(item_music)
+			keyboard.row(item_main_menu)
+			client.send_message(message.chat.id, 'Выберите интересующую вас информацию.', reply_markup = keyboard) #переход в меню с информацией
 
-		markup_inline.add(item_yes, item_no)
-		client.send_message(message.chat.id,  'Вы точно хотите вернутся на главное меню?',
-		reply_markup = markup_inline
+		elif message.text == '™️Создатель©️':
+			markup_inline = types.InlineKeyboardMarkup()
+			item_telegram = types.InlineKeyboardButton(text = 'Телеграм', url = text_ejtiejteite) #НИ ВКОЕМ СЛУЧАЕМ НЕ ТРОГАТЬ) ОТ ОРИГИНАЛЬНОГО СОЗДАТЕЛЯ
 
-		)
-	elif message.text == '⚒️Написать событие ⚒️' and admin == True:
-		
-		write_event = client.send_message(message.chat.id, 'Введите ваше мероприятие/событие:' )
-		client.register_next_step_handler(write_event, hello)
-	elif message.text == '🚫Удалить события🚫' and admin == True:
-		markup_inline = types.InlineKeyboardMarkup()
-
-		item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
-		item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
-
-
-		markup_inline.add(item_yes, item_no)
-		client.send_message(message.chat.id,  'Вы уверены?🤔', 
-		reply_markup = markup_inline
-
-		)
-	elif message.text == '🎵Подборка музыки от КванториУМа🎵':
-		path = './music'
-		music_count = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
-		if music_count > 0:
-			client.send_message(message.chat.id, 'Вот наша подборка)')
-			for file in os.listdir('music/'):
-				if file.split('.')[-1] == 'mp3':
-					
-
-					audio = open('music/' + file, 'rb')
-					client.send_audio(message.chat.id, audio)	
-		else:
-			client.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
+			markup_inline.add(item_telegram)
+			client.send_message(message.chat.id, 'Одерий Ярослав Александрович', reply_markup = markup_inline)
 
 
+		elif message.text == '❌ Удалить музыку ❌' and admin == True:
+			markup_inline = types.InlineKeyboardMarkup()
 
-		
-
-
-	elif message.text == 'Информация о Кванториум - Сахалин ℹ️':
-
-		keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
-		item_own_info = types.KeyboardButton('Общая информация про КванториУМ65.')
-		item_kvants = types.KeyboardButton('КвантУМы')
-		item_event = types.KeyboardButton('🎟️ МЕРОПРИЯТИЕ 🎟️')
-		item_music = types.KeyboardButton('🎵Подборка музыки от КванториУМа🎵')
-		item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-
-		
-		keyboard.row(item_own_info)
-		keyboard.row(item_kvants, item_event)
-		keyboard.row(item_music)
-		keyboard.row(item_main_menu)
-		client.send_message(message.chat.id, 'Выберите интересующую вас информацию.', reply_markup = keyboard) #переход в меню с информацией
-
-	elif message.text == '™️Создатель©️':
-		markup_inline = types.InlineKeyboardMarkup()
-		item_telegram = types.InlineKeyboardButton(text = 'Телеграм', url = text_ejtiejteite) #НИ ВКОЕМ СЛУЧАЕМ НЕ ТРОГАТЬ) ОТ ОРИГИНАЛЬНОГО СОЗДАТЕЛЯ
-
-		markup_inline.add(item_telegram)
-		client.send_message(message.chat.id, 'Одерий Ярослав Александрович', reply_markup = markup_inline)
+			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete_music') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
 
 
-	elif message.text == '❌ Удалить музыку ❌' and admin == True:
-		markup_inline = types.InlineKeyboardMarkup()
+			markup_inline.add(item_yes, item_no)
+			client.send_message(message.chat.id,  'Вы уверены?🤔', 
+			reply_markup = markup_inline
 
-		item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete_music') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
-		item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
+			)
+			
+
+		elif message.text == '➕Управление подборкой музыки➕' and admin == True:
+			
+			keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
+
+			item_add_music = types.KeyboardButton('🎶 Добавить музыку 🎶')
+			item_delete_music = types.KeyboardButton('❌ Удалить музыку ❌')
+			item_back_adminPan = types.KeyboardButton('⚙ Вернутся в Админ Панель ⚙')
+			keyboard.row( item_delete_music)
+			keyboard.row(item_back_adminPan)
+			client.send_message(message.chat.id, 'Теперь вам подвластна музыка КванториУМа🎵', reply_markup = keyboard)
+
+		elif message.text == '🎶 Добавить музыку 🎶' and admin == True:
+			write_event = client.send_message(message.chat.id, 'Отправляйте музыку для подборки' )
+			client.register_next_step_handler(write_event, save_music)
+		elif message.text == text_tech_work_false and admin == True and tech_work == False:
+			tech_work = True
+			client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
+		elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
+			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
+
+			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
+			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
+			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
+			markup_reply.row(item_send_message, item_delete_events)
+			markup_reply.row(item_music_control)
+			markup_reply.row (item_main_menu)
+
+			client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
+		elif message.text == text_tech_work_true and admin == True and tech_work == False:
+			tech_work = False
+			client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
+		elif message.text == 'Админ Панель' and admin == True:
+
+			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
+
+			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
+			if tech_work == False:
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
+			elif tech_work == True:
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
+			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
+			markup_reply.row(item_send_message, item_delete_events)
+			markup_reply.row(item_music_control)
+			markup_reply.row(item_go_on_tech_work)
+			markup_reply.row (item_main_menu)
+
+			client.send_message(message.chat.id, 'Добро пожаловать в админ панель.', reply_markup = markup_reply)
+	elif tech_work == True:
+		if admin == False:
+			client.send_message(message.chat.id, text_tech_work_for_users)
+
+		if admin == True:
+			if message.text == 'Админ Панель' :
+
+				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
+
+				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
+				if tech_work == False:
+					item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
+				elif tech_work == True:
+					item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
+				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
+				markup_reply.row(item_send_message, item_delete_events)
+				markup_reply.row(item_music_control)
+				markup_reply.row(item_go_on_tech_work)
+				markup_reply.row (item_main_menu)
+			elif message.text == '❌ Удалить музыку ❌' :
+				markup_inline = types.InlineKeyboardMarkup()
+
+				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete_music') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
 
 
-		markup_inline.add(item_yes, item_no)
-		client.send_message(message.chat.id,  'Вы уверены?🤔', 
-		reply_markup = markup_inline
+				markup_inline.add(item_yes, item_no)
+				client.send_message(message.chat.id,  'Вы уверены?🤔', 
+				reply_markup = markup_inline
 
-		)
-		
+				)
+				
 
-	elif message.text == '➕Управление подборкой музыки➕' and admin == True:
-		
-		keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
+			elif message.text == '➕Управление подборкой музыки➕' :
+				
+				keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
-		item_add_music = types.KeyboardButton('🎶 Добавить музыку 🎶')
-		item_delete_music = types.KeyboardButton('❌ Удалить музыку ❌')
-		item_back_adminPan = types.KeyboardButton('⚙ Вернутся в Админ Панель ⚙')
-		keyboard.row( item_delete_music)
-		keyboard.row(item_back_adminPan)
-		client.send_message(message.chat.id, 'Теперь вам подвластна музыка КванториУМа🎵', reply_markup = keyboard)
+				item_add_music = types.KeyboardButton('🎶 Добавить музыку 🎶')
+				item_delete_music = types.KeyboardButton('❌ Удалить музыку ❌')
+				item_back_adminPan = types.KeyboardButton('⚙ Вернутся в Админ Панель ⚙')
+				keyboard.row( item_delete_music)
+				keyboard.row(item_back_adminPan)
+				client.send_message(message.chat.id, 'Теперь вам подвластна музыка КванториУМа🎵', reply_markup = keyboard)
 
-	elif message.text == '🎶 Добавить музыку 🎶' and admin == True:
-		write_event = client.send_message(message.chat.id, 'Отправляйте музыку для подборки' )
-		client.register_next_step_handler(write_event, save_music)
+			elif message.text == '🎶 Добавить музыку 🎶' :
+				write_event = client.send_message(message.chat.id, 'Отправляйте музыку для подборки' )
+				client.register_next_step_handler(write_event, save_music)
+			elif message.text == text_tech_work_false  and tech_work == False:
+				tech_work = True
+				client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
+			elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
+				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
-	elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
-		markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
+				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
+				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
+				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
+				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
+				markup_reply.row(item_send_message, item_delete_events)
+				markup_reply.row(item_music_control)
+				markup_reply.row (item_main_menu)
 
-		item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-		item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-		item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
-		item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
-		markup_reply.row(item_send_message, item_delete_events)
-		markup_reply.row(item_music_control)
-		markup_reply.row (item_main_menu)
-
-		client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
-
-	if message.text == 'Админ Панель' and admin == True:
-
-		markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
-
-		item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-		item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-		item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
-		item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
-		markup_reply.row(item_send_message, item_delete_events)
-		markup_reply.row(item_music_control)
-		markup_reply.row (item_main_menu)
-
-		client.send_message(message.chat.id, 'Добро пожаловать в админ панель.', reply_markup = markup_reply)
-
-
+				client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
+			elif message.text == text_tech_work_true  and tech_work == False:
+				tech_work = False
+				client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
 
 
 @client.callback_query_handler(func = lambda call: True)
