@@ -16,6 +16,9 @@ tech_work = False
 text_tech_work_for_users = 'Бот сейчас на тех.работах'
 
 
+#информация про кванториум сахалин
+text_full_info_about_kvantorium_65 = '📜Общая информация про КванториУМ65.📜'
+text_full_info_about_kvantorium_65_text = 'Привет👋, наш КванториУМ самый первый🥇 на острове Сахалин, вы представляете?! Это же круто быть одними из первых, мы с открытия (2017 год) обучаем детей и помогаем им узнавать новое в жизни. У нас имеется 7 КвантУМов, много разных педагогов с которыми вы сможете приятно провести время за обучением.'
 token = config.token
 client = telebot.TeleBot(config.token)
 events = None#Текст мероприятий
@@ -84,7 +87,8 @@ def get_text (message):
 	if tech_work == False:
 		if message.text == 	'Номер тех.поддержки 📞':
 			client.send_message(message.chat.id, number_reception)
-
+		elif message.text == text_full_info_about_kvantorium_65:
+			client.send_message(message.chat.id, text_full_info_about_kvantorium_65_text)
 		elif message.text == 'Мы в соц.сетях 📱':
 			markup_inline.add(item_inst, item_net)
 			client.send_message(message.chat.id, 'Выберите тип соц.сети', reply_markup = markup_inline)
@@ -171,7 +175,7 @@ def get_text (message):
 		elif message.text == 'Информация о Кванториум - Сахалин ℹ️':
 
 			keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
-			item_own_info = types.KeyboardButton('Общая информация про КванториУМ65.')
+			item_own_info = types.KeyboardButton(text_full_info_about_kvantorium_65)
 			item_kvants = types.KeyboardButton('КвантУМы')
 			item_event = types.KeyboardButton('🎟️ МЕРОПРИЯТИЕ 🎟️')
 			item_music = types.KeyboardButton('🎵Подборка музыки от КванториУМа🎵')
