@@ -251,6 +251,10 @@ def get_text (message):
 	elif tech_work == True:
 		if admin == False:
 			client.send_message(message.chat.id, text_tech_work_for_users)
+		elif message.text == '↩️На главное меню ↪️':
+			markup_inline = types.InlineKeyboardMarkup()
+			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
 
 		if admin == True:
 			if message.text == 'Админ Панель' :
@@ -315,6 +319,10 @@ def get_text (message):
 			elif message.text == text_tech_work_true  and tech_work == False:
 				tech_work = False
 				client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
+			elif message.text == '↩️На главное меню ↪️':
+				markup_inline = types.InlineKeyboardMarkup()
+				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
 
 
 @client.callback_query_handler(func = lambda call: True)
