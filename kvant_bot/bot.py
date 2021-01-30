@@ -284,6 +284,7 @@ def get_text (message):
 				markup_reply.row(item_music_control)
 				markup_reply.row(item_go_on_tech_work)
 				markup_reply.row (item_main_menu)
+				client.send_message(message.chat.id, 'Добро пожаловать в админ панель.', reply_markup = markup_reply)
 
 			elif message.text == '❌ Удалить музыку ❌' :
 				markup_inline = types.InlineKeyboardMarkup()
