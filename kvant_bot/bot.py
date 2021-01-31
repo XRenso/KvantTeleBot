@@ -14,8 +14,16 @@ from dateutil import parser
 from pprint import pprint
 from time import sleep
 #тех.работы
-text_tech_work_false = 'Объявить тех.работы'
-text_tech_work_true = 'Закончить тех.работы'
+text_tech_work_settings = 'Настройки тех.работ'
+text_tech_work_on = 'Объявить тех.работы'
+text_tech_work_off = 'Закончить тех.работы'
+text_would_setting_tech_work = 'Что сделать?'
+text_tech_work_succes_on = 'Сервер успешно переведён в режим тех.работ'
+text_tech_work_unsucces_on = 'Сервер уже находится на тех.работах'
+text_tech_work_succes_off = 'Сервер успешно переведён в обычный режим'
+text_tech_work_unsucces_off = 'Сервер уже находится в обычном режиме'
+
+
 tech_work = False
 text_tech_work_for_users = 'Бот сейчас на тех.работах'
 
@@ -245,12 +253,14 @@ def get_text (message):
 			client.register_next_step_handler(write_event, save_music)
 
 
-		elif message.text == text_tech_work_false and admin == True and tech_work == False:
-			tech_work = True
-			client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
+		elif message.text == text_tech_work_settings and admin == True:
+			markup_inline = types.InlineKeyboardMarkup()
+			item_yes = types.InlineKeyboardButton(text = text_tech_work_on, callback_data = 'tech_work_on') 
+			item_no = types.InlineKeyboardButton(text = text_tech_work_off, callback_data = 'tech_work_off')
+			
+			client.send_message(message.chat.id, text_would_setting_tech_work , reply_markup = markup_inline)
 
-		elif message.text == text_tech_work_true and admin == True and tech_work == False:
-				client.send_message(message.chat.id, 'Сервер уже находится в обычном режиме')
+		
 		
 
 		elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
@@ -258,7 +268,7 @@ def get_text (message):
 
 			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
 			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-			item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
+			item_go_on_tech_work = types.KeyboardButton(text_tech_work_settings)
 			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
 			markup_reply.row(item_send_message, item_delete_events)
@@ -267,15 +277,12 @@ def get_text (message):
 			markup_reply.row (item_main_menu)
 
 			client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
-		elif message.text == text_tech_work_true and admin == True and tech_work == False:
-			tech_work = False
-			client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
 		elif message.text == 'Админ Панель' and admin == True:
 
 			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
 			item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-			item_go_on_tech_work = types.KeyboardButton(text_tech_work_false)
+			item_go_on_tech_work = types.KeyboardButton(text_tech_work_settings)
 			item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
 			item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 			item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
@@ -297,6 +304,13 @@ def get_text (message):
 				reply_markup = markup_inline
 
 				)
+		elif message.text == text_tech_work_settings and admin == True:
+			markup_inline = types.InlineKeyboardMarkup()
+			item_yes = types.InlineKeyboardButton(text = text_tech_work_on, callback_data = 'tech_work_on') 
+			item_no = types.InlineKeyboardButton(text = text_tech_work_off, callback_data = 'tech_work_off')
+			
+			client.send_message(message.chat.id, text_would_setting_tech_work , reply_markup = markup_inline)
+
 
 		elif admin == True:
 			if message.text == '↩️На главное меню ↪️':
@@ -308,8 +322,7 @@ def get_text (message):
 				reply_markup = markup_inline
 
 				)
-			elif message.text == text_tech_work_false and admin == True and tech_work == True:
-				client.send_message(message.chat.id, 'Сервер уже находится на тех.работах')
+			
 
 			elif message.text == '⚒️Написать событие ⚒️' and admin == True:
 				markup_inline = types.InlineKeyboardMarkup()
@@ -337,7 +350,7 @@ def get_text (message):
 				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
-				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_settings)
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
@@ -381,7 +394,7 @@ def get_text (message):
 
 				item_send_message =types.KeyboardButton('⚒️Написать событие ⚒️')
 				item_main_menu = types.KeyboardButton('↩️На главное меню ↪️')
-				item_go_on_tech_work = types.KeyboardButton(text_tech_work_true)
+				item_go_on_tech_work = types.KeyboardButton(text_tech_work_settings)
 				item_delete_events = types.KeyboardButton('🚫Удалить события🚫')
 				item_music_control = types.KeyboardButton('➕Управление подборкой музыки➕')
 				markup_reply.row(item_send_message, item_delete_events)
@@ -390,16 +403,14 @@ def get_text (message):
 				markup_reply.row (item_main_menu)
 
 				client.send_message(message.chat.id, 'С возвращением', reply_markup = markup_reply)
-			elif message.text == text_tech_work_true:
-				tech_work = False
-				client.send_message(message.chat.id, 'Сервер успешно переведён в обычный режим')
+			
 			
 
 @client.callback_query_handler(func = lambda call: True)
 def answer(call):
 	global admin
 	admin = False
-	
+	global tech_work
 
 	text_start_comm = '/start' #текст комманды для вызова первого сообщения
 
@@ -430,6 +441,19 @@ def answer(call):
 
 	elif call.data == 'NO':
 		client.send_message(call.message.chat.id, 'Очень жаль 😥. Если хотите вернутся используйте следущую комманду: ' + text_start_comm)
+
+	elif call.data == tech_work_on:
+		if tech_work == False:
+			tech_work = True
+			client.send_message(call.message.chat.id, text_tech_work_succes_on)
+		elif tech_work == True:
+			client.send_message(call.message.chat.id, text_tech_work_unsucces_on)
+	elif call.data == tech_work_off:
+		if tech_work == True:
+			tech_work = False
+			client.send_message(call.message.chat.id, text_tech_work_succes_off)
+		elif tech_work == False:
+			client.send_message(call.message.chat.id, text_tech_work_unsucces_off)
 
 	elif call.data == 'stay_message':
 
