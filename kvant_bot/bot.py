@@ -145,9 +145,15 @@ def get_text (message):
 
 			)
 		elif message.text == '⚒️Написать событие ⚒️' and admin == True:
+			markup_inline = types.InlineKeyboardMarkup()
+
+			item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'write_event')
+			item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
+
+			markup_inline.add(item_yes, item_no)
+			client.send_message(message.chat.id, 'Вы уверены?🤔', reply_markup = markup_inline)
+
 			
-			write_event = client.send_message(message.chat.id, 'Введите ваше мероприятие/событие:' )
-			client.register_next_step_handler(write_event, hello)
 		elif message.text == '🚫Удалить события🚫' and admin == True:
 			markup_inline = types.InlineKeyboardMarkup()
 
@@ -408,7 +414,9 @@ def answer(call):
 
 		fartik = ['Фуххх, повезло', 'Щелчок таноса удалось избежать', 'Вас не уволят)', 'Какой генний чел который придумал отмену', 'Интересный факт - Вы Администратор)', 'Как дела?', 'КванториУМ хорошая вещь', 'Хорошего дня, Администратор', 'Как работа?', 'Удачи в жизни', 'Хорошая работа, Администратор', 'Вы были спасены, мои поздравления', 'Отличная погода, наверное.... Я всё таки бот не знаю как погода']
 		client.send_message(call.message.chat.id, random.choice(fartik))
-
+	elif call.data == 'write_event':
+		write_event = client.send_message(call.message.chat.id, 'Введите ваше мероприятие/событие:' )
+		client.register_next_step_handler(write_event, hello)
 
 	elif call.data == 'main_menu':
 		if call.message.chat.id in admin_list:
