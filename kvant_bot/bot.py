@@ -243,9 +243,9 @@ def get_text (message):
 			tech_work = True
 			client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
 
-
-		elif message.text == text_tech_work_false and admin == True and tech_work == True:
-			client.send_message(message.chat.id, 'Сервер уже находится на тех.работах')
+		elif message.text == text_tech_work_true and admin == True and tech_work == False:
+				client.send_message(message.chat.id, 'Сервер уже находится в обычном режиме')
+		
 
 		elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
 			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
@@ -302,6 +302,8 @@ def get_text (message):
 				reply_markup = markup_inline
 
 				)
+			elif message.text == text_tech_work_false and admin == True and tech_work == True:
+				client.send_message(message.chat.id, 'Сервер уже находится на тех.работах')
 
 			elif message.text == 'Админ Панель' and admin == True:
 
