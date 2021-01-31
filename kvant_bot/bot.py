@@ -311,6 +311,27 @@ def get_text (message):
 			elif message.text == text_tech_work_false and admin == True and tech_work == True:
 				client.send_message(message.chat.id, 'Сервер уже находится на тех.работах')
 
+			elif message.text == '⚒️Написать событие ⚒️' and admin == True:
+				markup_inline = types.InlineKeyboardMarkup()
+
+				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'write_event')
+				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
+
+				markup_inline.add(item_yes, item_no)
+				client.send_message(message.chat.id, 'Вы уверены?🤔', reply_markup = markup_inline)
+			elif message.text == '🚫Удалить события🚫' and admin == True:
+				markup_inline = types.InlineKeyboardMarkup()
+
+				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'delete') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
+				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_message')
+
+
+				markup_inline.add(item_yes, item_no)
+				client.send_message(message.chat.id,  'Вы уверены?🤔', 
+				reply_markup = markup_inline
+
+				)
+
 			elif message.text == 'Админ Панель' and admin == True:
 
 				markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
