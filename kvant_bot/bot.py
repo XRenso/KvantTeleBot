@@ -280,7 +280,8 @@ def get_text (message):
 
 			client.send_message(message.chat.id, 'Добро пожаловать в админ панель.', reply_markup = markup_reply)
 	elif tech_work == True:
-		client.send_message(message.chat.id, text_tech_work_for_users)
+		if admin == False:
+			client.send_message(message.chat.id, text_tech_work_for_users)
 		if message.text == '↩️На главное меню ↪️':
 				markup_inline = types.InlineKeyboardMarkup()
 				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
