@@ -442,13 +442,13 @@ def answer(call):
 	elif call.data == 'NO':
 		client.send_message(call.message.chat.id, 'Очень жаль 😥. Если хотите вернутся используйте следущую комманду: ' + text_start_comm)
 
-	elif call.data == tech_work_on:
+	elif call.data == 'tech_work_on':
 		if tech_work == False:
 			tech_work = True
 			client.send_message(call.message.chat.id, text_tech_work_succes_on)
 		elif tech_work == True:
 			client.send_message(call.message.chat.id, text_tech_work_unsucces_on)
-	elif call.data == tech_work_off:
+	elif call.data == 'tech_work_off':
 		if tech_work == True:
 			tech_work = False
 			client.send_message(call.message.chat.id, text_tech_work_succes_off)
