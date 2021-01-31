@@ -19,6 +19,9 @@ text_tech_work_true = 'Закончить тех.работы'
 tech_work = False
 text_tech_work_for_users = 'Бот сейчас на тех.работах'
 
+#симуляция браузера
+headers = requests.utils.default_headers()
+headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
 
 #информация про кванториум сахалин
 text_full_info_about_kvantorium_65 = '📜Общая информация про КванториУМ65.📜'
@@ -71,15 +74,7 @@ def hello(message):
 	
 
 def save_music(message):
-	file_info = client.get_file(message.audio.file_id)
-	headers = requests.utils.default_headers()
-	headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
-	file = requests.get('https://api.telegram.org/file/bot{0}/{1}'.format(token, file_info.file_path), headers=headers)
-
-	with open(file_info.file_id,'wb') as f:
-		f.write(file.content)
-
-	client.send_message(message.chat.id, 'Музыка успешно добавленна')
+	pass
 	
 
 @client.message_handler(content_types = ['text'])
@@ -242,9 +237,16 @@ def get_text (message):
 		elif message.text == '🎶 Добавить музыку 🎶' and admin == True:
 			write_event = client.send_message(message.chat.id, 'Отправляйте музыку для подборки' )
 			client.register_next_step_handler(write_event, save_music)
+
+
 		elif message.text == text_tech_work_false and admin == True and tech_work == False:
 			tech_work = True
 			client.send_message(message.chat.id, 'Сервер успешно переведён в режим тех.работ')
+
+
+		elif message.text == text_tech_work_false and admin == True and tech_work == True:
+			client.send_message(message.chat.id, 'Сервер уже находится на тех.работах')
+
 		elif message.text == '⚙ Вернутся в Админ Панель ⚙' and admin == True:
 			markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
@@ -278,9 +280,8 @@ def get_text (message):
 
 			client.send_message(message.chat.id, 'Добро пожаловать в админ панель.', reply_markup = markup_reply)
 	elif tech_work == True:
-		if admin == False:
-			client.send_message(message.chat.id, text_tech_work_for_users)
-		elif message.text == '↩️На главное меню ↪️':
+		client.send_message(message.chat.id, text_tech_work_for_users)
+		if message.text == '↩️На главное меню ↪️':
 				markup_inline = types.InlineKeyboardMarkup()
 				item_yes = types.InlineKeyboardButton(text = 'Да', callback_data = 'main_menu') #начальные кнопки которые спрашивают хочет ли пользователь продолжить
 				item_no = types.InlineKeyboardButton(text = 'Нет', callback_data = 'stay_here')
