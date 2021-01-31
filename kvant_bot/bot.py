@@ -257,7 +257,7 @@ def get_text (message):
 			markup_inline = types.InlineKeyboardMarkup()
 			item_yes = types.InlineKeyboardButton(text = text_tech_work_on, callback_data = 'tech_work_on') 
 			item_no = types.InlineKeyboardButton(text = text_tech_work_off, callback_data = 'tech_work_off')
-			
+			markup_inline.add(item_yes,item_no)
 			client.send_message(message.chat.id, text_would_setting_tech_work , reply_markup = markup_inline)
 
 		
@@ -306,9 +306,10 @@ def get_text (message):
 				)
 		elif message.text == text_tech_work_settings and admin == True:
 			markup_inline = types.InlineKeyboardMarkup()
+
 			item_yes = types.InlineKeyboardButton(text = text_tech_work_on, callback_data = 'tech_work_on') 
 			item_no = types.InlineKeyboardButton(text = text_tech_work_off, callback_data = 'tech_work_off')
-			
+			markup_inline.add(item_yes,item_no)
 			client.send_message(message.chat.id, text_would_setting_tech_work , reply_markup = markup_inline)
 
 
