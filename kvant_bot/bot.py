@@ -24,9 +24,7 @@ tech_work = False
 text_tech_work_for_users = 'Бот сейчас на тех.работах'
 
 
-telebot.apihelper.proxy = {
-    'https': 'socks5h://127.127.127.127:12345'
-}
+
 #симуляция браузера
 headers = requests.utils.default_headers()
 headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
