@@ -8,6 +8,7 @@ import shutil
 import codecs
 import sys
 import aiogram
+import request
 #тех.работы
 text_tech_work_settings = 'Настройки тех.работ'
 text_tech_work_on = 'Объявить тех.работы'
