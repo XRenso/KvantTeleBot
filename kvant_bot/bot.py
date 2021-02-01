@@ -7,12 +7,7 @@ import os
 import shutil
 import codecs
 import sys
-import requests
-import feedparser
-from datetime import timedelta, datetime
-from dateutil import parser
-from pprint import pprint
-from time import sleep
+import aiogram
 #тех.работы
 text_tech_work_settings = 'Настройки тех.работ'
 text_tech_work_on = 'Объявить тех.работы'
@@ -36,7 +31,7 @@ text_full_info_about_kvantorium_65 = '📜Общая информация про
 text_full_info_about_kvantorium_65_text = 'Привет👋, наш КванториУМ самый первый🥇 на острове Сахалин, вы представляете?! Это же круто быть одними из первых, мы с открытия (2017 год) обучаем детей и помогаем им узнавать новое в жизни. У нас имеется 7 КвантУМов, много разных педагогов с которыми вы сможете приятно провести время за обучением.'
 token = config.token
 client = telebot.TeleBot(config.token)
-
+dp = Dispatcher(client)
 
 #RSS
 FEED_URL = 'https://www.feedforall.com/sample.xml'
@@ -50,10 +45,12 @@ admin = False
 #MR2 - строго обрабатывать действия пользователя связанных с админ доступом
   
 
-
+@client.message_handler(commands = ['get_id'])
+def get_id(message):
+	client.send_message(message.chat.id, message.chat.id)
 
 @client.message_handler(commands = ['start'])
-def get_user_info(message):
+def get_start(message):
 	global admin
 
 
@@ -530,4 +527,5 @@ def answer(call):
 			os.mkdir(path)
 	client.delete_message(call.message.chat.id, call.message.message_id)
 
-client.polling(none_stop = True, interval = 0)
+if __name__ == 'main':
+	executor.start_polling(dp, skip_updates = True)
