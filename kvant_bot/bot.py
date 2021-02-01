@@ -48,8 +48,9 @@ admin = False
 #MR2 - строго обрабатывать действия пользователя связанных с админ доступом
   
 
-
-
+@client.message_handler(commands = ['start'])
+def user_id(message):
+	client.send_message(message.chat.id, message.chat.id)
 @client.message_handler(commands = ['start'])
 def get_start(message):
 	global admin
