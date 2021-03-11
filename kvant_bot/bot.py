@@ -1,6 +1,7 @@
 import config
 import telebot
 from telebot import types
+
 import random
 import constants
 import os
@@ -36,8 +37,7 @@ text_full_info_about_kvantorium_65_text = 'Привет👋, наш Кванто
 client = telebot.TeleBot(config.token)
 
 
-#RSS
-FEED_URL = 'https://www.feedforall.com/sample.xml'
+
 
 events = None#Текст мероприятий
 text_ejtiejteite = 'https://t.me/XRenso'		
@@ -529,9 +529,8 @@ def answer(call):
 			os.mkdir(path)
 	client.delete_message(call.message.chat.id, call.message.message_id)
 
-try:
-    client.polling(none_stop=True, interval=0)
-except:
-    pass
+if __name__ == '__main__':
+    client.polling(none_stop=True, interval = 0)
+
 #if __name__ == '__main__':
 #	executor.start_polling(dp, skip_updates = True)
