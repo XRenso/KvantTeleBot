@@ -5,6 +5,7 @@ from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.utils import executor
 from aiogram.utils.markdown import text
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+import aiogram
 import asyncio
 import config 
 import keyboards as kb
@@ -62,6 +63,15 @@ async def admin_pan_open(message: types.Message):
 		admin = True
 	if admin == True:
 		await bot.send_message(message.chat.id, 'Добро пожаловать в Админ панель', reply_markup = kb.admin_kb)
+
+@dp.message_handler(commands = ['send_all'])
+async def send_all(message: types.Message):
+	try:
+		for user in config.joinedUsers:
+			await bot.send_message(user, message.text[message.text.find(' '):])
+	except aiogram.utils.exceptions.BotBlocked:
+		pass
+
 
 @dp.message_handler(commands = ['start'])
 async def start(message: types.Message):
@@ -173,6 +183,10 @@ async def answer (call: types.CallbackQuery):
 	callback_data = call.data
 	#комманды обычных пользователей
 	if callback_data == 'yesStart':
+		if not str (call.message.chat.id) in config.joinedUsers:
+			config.joinedFile = open('joined.txt', 'a')
+			config.joinedFile.write(str(call.message.chat.id) + '\n')
+			config.joinedUsers.add(call.message.chat.id)
 		await call.bot.send_message(call.message.chat.id,' Добро пожаловать, приятного пользования ботом 🤝',
 		 	reply_markup = kb.main_menu_kb)
 	elif callback_data == 'backMainMenu':
@@ -190,7 +204,7 @@ async def answer (call: types.CallbackQuery):
 	#админ комманды
 	if admin == True:
 		if callback_data == 'delMusic':
-			
+
 			check_file = os.path.exists('music')
 			if check_file == True:
 				path = './music/'
