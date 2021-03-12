@@ -11,7 +11,7 @@ button_soccial = KeyboardButton('Мы в соц.сетях 📱')
 button_Admin = KeyboardButton('Админ Панель')
 button_more_info = KeyboardButton('Информация о Кванториум - Сахалин ℹ️')
 button_on_main_menu = KeyboardButton('↩️На главное меню ↪️')
-
+button_rss_control = KeyboardButton('📰Управление подпиской на новости📰')
 
 moreInfo_button_aboutKvant = KeyboardButton('📜Общая информация про КванториУМ65.📜')
 moreInfo_button_kvants = KeyboardButton('КвантУМы')
@@ -28,7 +28,7 @@ admin_button_delete_music = KeyboardButton('❌ Удалить музыку ❌'
 admin_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(admin_button_add_event, admin_button_delete_event)
 admin_kb.add(button_on_main_menu)
 
-moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_aboutKvant).row(moreInfo_button_kvants,moreInfo_button_events).row(button_on_main_menu)
+moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_aboutKvant).row(moreInfo_button_kvants,moreInfo_button_events).row(button_rss_control).row(button_on_main_menu)
 
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True).row(button_num_techHelp,button_soccial)
 main_menu_kb.add(button_more_info).add(button_creator)
@@ -49,7 +49,8 @@ inline_stayHereMenu = InlineKeyboardButton('Нет', callback_data = 'stayHere')
 inline_CreatorTelegram = InlineKeyboardButton('Telegram', url = 'https://t.me/XRenso')
 inline_social_inst = InlineKeyboardButton('Инстаграмм🤳', url = 'https://www.instagram.com/kvantorium_65/')
 inline_social_site = InlineKeyboardButton('Сайт🌎', url = 'http://kvantorium.iroso.ru')
-
+inline_rss_on = InlineKeyboardButton('Подписаться', callback_data= 'RSSon')
+inline_rss_off = InlineKeyboardButton('Отписаться', callback_data = 'RSSoff')
 
 #admin
 inline_admin_deleteEvent = InlineKeyboardButton('Да', callback_data = 'deleteEvent')
@@ -58,12 +59,17 @@ inline_admin_deleteMusic = InlineKeyboardButton('Да', callback_data = 'delMusi
 inline_admin_addEvent = InlineKeyboardButton('Да', callback_data = 'write_event')
 
 
-
+#admin
 inline_kb_addEvent = InlineKeyboardMarkup().row(inline_admin_addEvent, inline_admin_StayAdmin)
 inline_kb_deleteEvent = InlineKeyboardMarkup().row(inline_admin_deleteEvent, inline_admin_StayAdmin)
 inline_kb_deleteMusic = InlineKeyboardMarkup().row(inline_admin_deleteMusic, inline_admin_StayAdmin)
 
+
+#user
 inline_kb_social = InlineKeyboardMarkup().row(inline_social_inst, inline_social_site)
+inline_kb_RSS = InlineKeyboardMarkup().row(inline_rss_on,inline_rss_off)
+
+
 
 inline_kb_Creator = InlineKeyboardMarkup().add(inline_CreatorTelegram)
 

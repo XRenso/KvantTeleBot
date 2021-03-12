@@ -13,6 +13,15 @@ import logging
 import random
 import os
 import codecs
+from database import SQLighet
+from datetime import datetime
+from webParse import WEBsite
+
+
+wbs = WEBsite('lastkey.txt')
+
+db = SQLighet('users.db')
+
 
 bot = Bot(token = config.token)
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -66,11 +75,18 @@ async def admin_pan_open(message: types.Message):
 
 @dp.message_handler(commands = ['send_all'])
 async def send_all(message: types.Message):
-	try:
+	global admin
+	admin = False
+	if message.chat.id in admin_list:
+		
+		admin = True
+	if admin == True:
 		for user in config.joinedUsers:
-			await bot.send_message(user, message.text[message.text.find(' '):])
-	except aiogram.utils.exceptions.BotBlocked:
-		pass
+			try:
+				
+					await bot.send_message(user, message.text[message.text.find(' '):])
+			except aiogram.utils.exceptions.BotBlocked:
+				continue
 
 
 @dp.message_handler(commands = ['start'])
@@ -153,10 +169,11 @@ async def get_text(message: types.Message):
 				path = './music/'
 				await bot.send_message(call.message.chat.id, 'Музыка отсутвует😥')
 				os.mkdir(path)
+	elif message.text == '📰Управление подпиской на новости📰':
+		await bot.send_message(message.chat.id, 'Выберите что вы хотите сделать?', reply_markup = kb.inline_kb_RSS)
 
 
-	elif message.text == '❌ Удалить музыку ❌':
-		await bot.send_message(message.chat.id, 'Вы уверены?🤔', reply_markup = kb.inline_kb_deleteMusic)
+	
 
 
 	#админ комманды	
@@ -198,6 +215,21 @@ async def answer (call: types.CallbackQuery):
 		neudacha = ['К счастью вы успели выпрыгнуть из портала', 'Вы спрятались от гномов', 'Прогроммист спас вас от неминуемого краха']
 		await call.bot.send_message(call.message.chat.id, random.choice(neudacha))
 	
+	elif callback_data == 'RSSon':
+		if(not db.subscriber_exists(call.message.from_user.id)):
+			db.add_subscriber(call.message.from_user.id)
+		else:
+			db.update_subcritions(call.message.from_user.id, True)
+		await call.message.answer('Вы подписались на рассылку новостей! Спасибо вам!')
+
+	elif callback_data == 'RSSoff':
+		if(not db.subscriber_exists(call.message.from_user.id)):
+			db.add_subscriber(call.message.from_user.id, False)
+			await call.message.answer('Вы и так не подписаны')
+		else:
+			db.update_subcritions(call.message.from_user.id, False)
+			await call.message.answer('Вы успешно отписались! Очень жаль😥')
+
 
 
 
@@ -259,10 +291,29 @@ async def answer (call: types.CallbackQuery):
 
 	await call.message.delete()
 
+async def rssSend(wait_for):
+	while True:
+		await asyncio.sleep(wait_for)
 
 
+		new_post = wbs.new_post()
+		if(new_post):
+			new_post.reverse()
+
+			for np in new_post: 
+				subcribers = db.get_subscriptions()
+
+
+				with open(np.download_image(info['image']), 'rb') as photo:
+					for s in subcribers:
+						await bot.send_photo(s[1] , photo, caption = info['title'] + '\n' + info['link'], disable_notification = True)
+
+
+				np.update_lastkey(info['id'])
 
 if __name__ == '__main__':
+	loop = asyncio.get_event_loop()
+	loop.create_task(rssSend(10))
 	executor.start_polling(dp, skip_updates = True)
 
 
