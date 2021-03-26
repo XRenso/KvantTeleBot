@@ -92,16 +92,16 @@ async def admin_pan_open(message: types.Message):
 
 @dp.message_handler(commands = ['send_all'])
 async def send_all(message: types.Message):
+	subscriptions = db.get_subscriptions()
 	global admin
 	admin = False
 	if message.chat.id in admin_list:
 		
 		admin = True
 	if admin == True:
-		for user in config.joinedUsers:
+		for user in subscriptions:
 			try:
-				
-					await bot.send_message(user, message.text[message.text.find(' '):])
+				await bot.send_message(user[1], message.text[message.text.find(' '):])
 			except aiogram.utils.exceptions.BotBlocked:
 				continue
 			except aiogram.utils.exceptions.CantTalkWithBots:
