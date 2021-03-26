@@ -2,7 +2,8 @@ from aiogram.types import ReplyKeyboardRemove, \
     ReplyKeyboardMarkup, KeyboardButton, \
     InlineKeyboardMarkup, InlineKeyboardButton
 
-
+import webParse as WP
+import asyncio
 
 #обычная клавиатура
 button_creator = KeyboardButton('™️Создатель©️')
@@ -59,6 +60,7 @@ inline_admin_deleteMusic = InlineKeyboardButton('Да', callback_data = 'delMusi
 inline_admin_addEvent = InlineKeyboardButton('Да', callback_data = 'write_event')
 
 
+
 #admin
 inline_kb_addEvent = InlineKeyboardMarkup().row(inline_admin_addEvent, inline_admin_StayAdmin)
 inline_kb_deleteEvent = InlineKeyboardMarkup().row(inline_admin_deleteEvent, inline_admin_StayAdmin)
@@ -68,7 +70,10 @@ inline_kb_deleteMusic = InlineKeyboardMarkup().row(inline_admin_deleteMusic, inl
 #user
 inline_kb_social = InlineKeyboardMarkup().row(inline_social_inst, inline_social_site)
 inline_kb_RSS = InlineKeyboardMarkup().row(inline_rss_on,inline_rss_off)
-
+def inline_kb_news(urlik):
+	inline_url_news = InlineKeyboardButton('Ссылка', url = urlik)
+	inline_kb_news = InlineKeyboardMarkup().row(inline_url_news)
+	return inline_kb_news
 
 
 inline_kb_Creator = InlineKeyboardMarkup().add(inline_CreatorTelegram)

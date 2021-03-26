@@ -15,11 +15,27 @@ import os
 import codecs
 from database import SQLighet
 from datetime import datetime
-from webParse import WEBsite
+import webParse as WP
+news_url = 'http://kvantorium.iroso.ru/news'
+html_news = WP.get_html(news_url)
+	
+async def check_updates(html, wait_for):
+	while True:
+		await asyncio.sleep(wait_for)
+		subscriptions = db.get_subscriptions()
+		current_news_title = WP.get_title(html)
+		current_news_url = WP.get_url(html)	
+		f = codecs.open('lastData.txt','r', 'utf_8_sig' )
+		last_news_title = f.read()
 
-
-wbs = WEBsite('lastkey.txt')
-
+		if last_news_title != current_news_title:
+			for user in config.joinedUsers:
+				try:
+					await bot.send_message(user, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
+				except aiogram.utils.exceptions.BotBlocked:
+					continue
+			with open('lastData.txt', 'w', encoding= 'utf-8') as f:
+				f.write(str(current_news_title))
 db = SQLighet('users.db')
 
 
@@ -200,10 +216,6 @@ async def answer (call: types.CallbackQuery):
 	callback_data = call.data
 	#комманды обычных пользователей
 	if callback_data == 'yesStart':
-		if not str (call.message.chat.id) in config.joinedUsers:
-			config.joinedFile = open('joined.txt', 'a')
-			config.joinedFile.write(str(call.message.chat.id) + '\n')
-			config.joinedUsers.add(call.message.chat.id)
 		await call.bot.send_message(call.message.chat.id,' Добро пожаловать, приятного пользования ботом 🤝',
 		 	reply_markup = kb.main_menu_kb)
 	elif callback_data == 'backMainMenu':
@@ -216,8 +228,16 @@ async def answer (call: types.CallbackQuery):
 		await call.bot.send_message(call.message.chat.id, random.choice(neudacha))
 	
 	elif callback_data == 'RSSon':
+		if not str (call.message.chat.id) in config.joinedUsers:
+			config.joinedFile = open('joined.txt', 'a')
+			config.joinedFile.write(str(call.message.chat.id) + '\n')
+			config.joinedUsers.add(call.message.chat.id)
+			config.joinedFile.close()
+
+
 		if(not db.subscriber_exists(call.message.from_user.id)):
 			db.add_subscriber(call.message.from_user.id)
+
 		else:
 			db.update_subcritions(call.message.from_user.id, True)
 		await call.message.answer('Вы подписались на рассылку новостей! Спасибо вам!')
@@ -291,29 +311,10 @@ async def answer (call: types.CallbackQuery):
 
 	await call.message.delete()
 
-async def rssSend(wait_for):
-	while True:
-		await asyncio.sleep(wait_for)
-
-
-		new_post = wbs.new_post()
-		if(new_post):
-			new_post.reverse()
-
-			for np in new_post: 
-				subcribers = db.get_subscriptions()
-
-
-				with open(np.download_image(info['image']), 'rb') as photo:
-					for s in subcribers:
-						await bot.send_photo(s[1] , photo, caption = info['title'] + '\n' + info['link'], disable_notification = True)
-
-
-				np.update_lastkey(info['id'])
 
 if __name__ == '__main__':
 	loop = asyncio.get_event_loop()
-	loop.create_task(rssSend(10))
+	loop.create_task(check_updates(html_news,10))
 	executor.start_polling(dp, skip_updates = True)
 
 
