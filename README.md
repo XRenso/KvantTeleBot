@@ -1,2 +1,4 @@
 # KvantTeleBot
 Official kvantTelebot65
+
+#THE PROJECT IS NOT USED FOR COMMERCIAL PURPOSES
