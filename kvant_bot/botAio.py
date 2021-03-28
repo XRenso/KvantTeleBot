@@ -76,7 +76,12 @@ async def event_text(message: types.Message, state:FSMContext):
 	await hello(eventText)
 	await state.finish()
 
-
+@dp.message_handler(commands =['last_news'])
+async def get_id(message: types.Message):
+	current_news_title = WP.get_title(html_news)
+	current_news_url = WP.get_url(html_news)
+	await bot.send_message(message.chat.id, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
+	
 @dp.message_handler(commands =['get_id'])
 async def get_id(message: types.Message):
 	await message.answer(message.from_user.id)
