@@ -27,16 +27,16 @@ async def check_updates(html, wait_for):
 		current_news_title = WP.get_title(html)
 		current_news_url = WP.get_url(html)	
 		f = codecs.open('lastData.txt','r', 'utf_8_sig' )
-		last_news_title = f.read()
+		last_news_url = f.read()
 
-		if last_news_title != current_news_title:
+		if last_news_url != current_news_url:
 			for s in subscriptions:
 				try:
 					await bot.send_message(s[1], current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
 				except aiogram.utils.exceptions.BotBlocked:
 					continue
 			with open('lastData.txt', 'w', encoding= 'utf-8') as f:
-				f.write(str(current_news_title))
+				f.write(str(current_news_url))
 
 
 
