@@ -71,7 +71,7 @@ inline_kb_deleteMusic = InlineKeyboardMarkup().row(inline_admin_deleteMusic, inl
 inline_kb_social = InlineKeyboardMarkup().row(inline_social_inst, inline_social_site)
 inline_kb_RSS = InlineKeyboardMarkup().row(inline_rss_on,inline_rss_off)
 def inline_kb_news(urlik):
-	inline_url_news = InlineKeyboardButton('Ссылка', url = urlik)
+	inline_url_news = InlineKeyboardButton('⏭️Подробнее⏭️', url = urlik)
 	inline_kb_news = InlineKeyboardMarkup().row(inline_url_news)
 	return inline_kb_news
 
