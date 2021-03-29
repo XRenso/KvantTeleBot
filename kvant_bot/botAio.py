@@ -296,14 +296,20 @@ async def answer (call: types.CallbackQuery):
 				path_event = 'events.txt'
 				os.remove(path_event)
 				await call.bot.send_message(call.message.chat.id, '✔️Событие успешно удаленно✔️')
-				await call.bot.send_message(call.message.chat.id, random.shuffle(fact))
+				random.shuffle(fact)
+				for i in fact:
+					await call.bot.send_message(call.message.chat.id, i)
+					break
 			elif success == False and ready == True: # если успех равен лжи, а код готов, то бот пишет что нет событий
 				await call.bot.send_message(call.message.chat.id, 'К сожелению события отсутвуют чтобы их удалить')
 
 
 		elif callback_data == 'stayMessage':
 			fartik = ['Фуххх, повезло', 'Щелчок таноса удалось избежать', 'Вас не уволят)', 'Какой генний чел который придумал отмену', 'Интересный факт - Вы Администратор)', 'Как дела?', 'КванториУМ хорошая вещь', 'Хорошего дня, Администратор', 'Как работа?', 'Удачи в жизни', 'Хорошая работа, Администратор', 'Вы были спасены, мои поздравления', 'Отличная погода, наверное.... Я всё таки бот не знаю как погода', 'Вам нравится хотдоги?', '#FREE_OPERATING_SYSTEM_FOR_EVERYONE', '101 телеграмм', 'Мне нравится развивать этого бота']
-			await call.bot.send_message(call.message.chat.id, random.shuffle(fartik))
+			random.shuffle(fartik)
+			for  i in fartik:
+				await call.bot.send_message(call.message.chat.id, i)
+				break
 
 
 		elif callback_data == 'write_event':
