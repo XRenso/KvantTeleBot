@@ -227,8 +227,10 @@ async def answer (call: types.CallbackQuery):
 		await call.bot.send_message(call.message.chat.id,' Добро пожаловать, приятного пользования ботом 🤝',
 		 	reply_markup = kb.main_menu_kb)
 	elif callback_data == 'backMainMenu':
-		
-		await call.bot.send_message(call.message.chat.id, random.choice(main_menu_meet), reply_markup = kb.main_menu_kb)
+		random.shuffle(main_menu_meet)
+		for i in main_menu_meet:
+			await call.bot.send_message(call.message.chat.id, i, reply_markup = kb.main_menu_kb)
+			break
 	elif callback_data == 'noStart':
 		await call.bot.send_message(call.message.chat.id, 'Очень жаль 😥. Если хотите вернутся используйте следущую комманду: /start')
 	elif callback_data == 'stayHere':
