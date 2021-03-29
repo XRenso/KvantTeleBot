@@ -136,9 +136,9 @@ async def get_text(message: types.Message):
 	if message.text == '↩️На главное меню ↪️':
 		await bot.send_message(message.chat.id, 'Вы хотите вернутся на главное меню?', reply_markup = kb.inline_kb_mainMenu_back)
 	elif message.text == '™️Создатель©️':
-		await bot.send_message(message.chat.id, 'Одерий Ярослав Александрович', reply_markup = kb.inline_kb_Creator)
+		await message.reply('Одерий Ярослав Александрович', reply_markup = kb.inline_kb_Creator)
 	elif message.text == 'Номер тех.поддержки 📞':
-		await bot.send_message(message.chat.id, '+74242300277')
+		await message.reply('+74242300277')
 	elif message.text == 'Мы в соц.сетях 📱':
 		await bot.send_message(message.chat.id, 'Выберите тип соц.сети', reply_markup = kb.inline_kb_social)
 	elif message.text == 'Информация о Кванториум - Сахалин ℹ️':
