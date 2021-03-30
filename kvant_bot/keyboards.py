@@ -14,8 +14,20 @@ button_more_info = KeyboardButton('Информация о Кванториум 
 button_on_main_menu = KeyboardButton('↩️На главное меню ↪️')
 button_rss_control = KeyboardButton('📰Управление подпиской на новости📰')
 
+
+
+#клавиатура выбора квантума
+button_it_info = KeyboardButton('💻IT-квантум💻')
+button_aero_info = KeyboardButton('✈️Аэроквантум✈️')
+button_design_info = KeyboardButton('🎨Промдизайнквантум🎨')
+button_energy_info = KeyboardButton('⚡Энерджиквантум⚡')	
+button_hitech_info = KeyboardButton('⚙️Хайтек⚙️') 
+button_geo_info = KeyboardButton('🗺️Геоквантум🗺️')
+button_back_on_more_info = KeyboardButton('↩️Назад')
+
+#второй уровень клавиатуры с информацией
 moreInfo_button_aboutKvant = KeyboardButton('📜Общая информация про КванториУМ65.📜')
-moreInfo_button_kvants = KeyboardButton('КвантУМы')
+moreInfo_button_kvants = KeyboardButton('🖥КвантУМы🖥')
 moreInfo_button_events = KeyboardButton('🎟️ МЕРОПРИЯТИЕ 🎟️')
 moreInfo_button_music = KeyboardButton('🎵Подборка музыки от КванториУМа🎵')
 
@@ -23,6 +35,9 @@ admin_button_add_event = KeyboardButton('⚒️ Добавить событие 
 admin_button_delete_event = KeyboardButton('🚫 Удалить события 🚫')
 admin_button_delete_music = KeyboardButton('❌ Удалить музыку ❌')
 
+
+#клавиатуры
+kvantum_choose_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(button_it_info,button_aero_info).add(button_design_info,button_energy_info).add(button_hitech_info,button_geo_info).add(button_back_on_more_info)
 
 
 
@@ -33,6 +48,9 @@ moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_ab
 
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True).row(button_num_techHelp,button_soccial)
 main_menu_kb.add(button_more_info).add(button_creator)
+
+
+
 
 
 #инлайн клавиатура

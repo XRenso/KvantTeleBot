@@ -195,7 +195,10 @@ async def get_text(message: types.Message):
 				os.mkdir(path)
 	elif message.text == '📰Управление подпиской на новости📰':
 		await bot.send_message(message.chat.id, 'Выберите что вы хотите сделать?', reply_markup = kb.inline_kb_RSS)
-
+	elif message.text == '🖥КвантУМы🖥':
+		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
+	elif message.text == '↩️Назад':
+		await bot.send_message(message.chat.id, 'С возвращением', reply_markup = kb.moreInfo_kb)
 
 	
 
