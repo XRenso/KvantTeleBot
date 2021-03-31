@@ -20,13 +20,13 @@ news_url = 'http://kvantorium.iroso.ru/news'
 
 db = SQLighter('db.db')
 
-async def check_updates(html, wait_for):
+async def check_updates(wait_for):
 	while True:
 		await asyncio.sleep(wait_for)
 		html_news = WP.get_html(news_url)
 		subscriptions = db.get_subscriptions()
-		current_news_title = WP.get_title(html)
-		current_news_url = WP.get_url(html)	
+		current_news_title = WP.get_title(html_news)
+		current_news_url = WP.get_url(html_news)	
 		f = codecs.open('lastData.txt','r', 'utf_8_sig' )
 		last_news_url = f.read()
 
@@ -335,7 +335,7 @@ async def answer (call: types.CallbackQuery):
 
 if __name__ == '__main__':
 	loop = asyncio.get_event_loop()
-	loop.create_task(check_updates(html_news,10))
+	loop.create_task(check_updates(10))
 	executor.start_polling(dp, skip_updates = True)
 
 
