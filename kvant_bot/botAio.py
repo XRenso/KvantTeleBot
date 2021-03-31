@@ -17,12 +17,13 @@ from sqlighter import SQLighter
 from datetime import datetime
 import webParse as WP
 news_url = 'http://kvantorium.iroso.ru/news'
-html_news = WP.get_html(news_url)
+
 db = SQLighter('db.db')
 
 async def check_updates(html, wait_for):
 	while True:
 		await asyncio.sleep(wait_for)
+		html_news = WP.get_html(news_url)
 		subscriptions = db.get_subscriptions()
 		current_news_title = WP.get_title(html)
 		current_news_url = WP.get_url(html)	
@@ -35,7 +36,7 @@ async def check_updates(html, wait_for):
 					await bot.send_message(s[1], current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
 				except aiogram.utils.exceptions.BotBlocked:
 					continue
-			with open('lastData.txt', 'w') as f:
+			with open('lastData.txt', 'w', encoding= 'utf-8') as f:
 				f.write(str(current_news_url))
 				f.close()
 
@@ -79,6 +80,7 @@ async def event_text(message: types.Message, state:FSMContext):
 
 @dp.message_handler(commands =['last_news'])
 async def get_id(message: types.Message):
+	html_news = WP.get_html(news_url)
 	current_news_title = WP.get_title(html_news)
 	current_news_url = WP.get_url(html_news)
 	await bot.send_message(message.chat.id, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
