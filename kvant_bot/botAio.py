@@ -35,8 +35,9 @@ async def check_updates(html, wait_for):
 					await bot.send_message(s[1], current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
 				except aiogram.utils.exceptions.BotBlocked:
 					continue
-			with open('lastData.txt', 'w', encoding= 'utf-8') as f:
+			with open('lastData.txt', 'w') as f:
 				f.write(str(current_news_url))
+				f.close()
 
 
 
