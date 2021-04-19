@@ -7,7 +7,7 @@ from aiogram.utils.markdown import text
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 import aiogram
 import asyncio
-import config 
+import config
 import keyboards as kb
 import logging
 import random
@@ -26,7 +26,7 @@ async def check_updates(wait_for):
 		html_news = WP.get_html(news_url)
 		subscriptions = db.get_subscriptions()
 		current_news_title = WP.get_title(html_news)
-		current_news_url = WP.get_url(html_news)	
+		current_news_url = WP.get_url(html_news)
 		f = codecs.open('lastData.txt','r', 'utf_8_sig' )
 		last_news_url = f.read()
 
@@ -59,8 +59,8 @@ events = None #текст событий
 main_menu_meet =['🤯','Гном нашёл вас и привез обратно', 'Вы нашли магический портал, и он переместил вас сюда', 'Да, здравствуйет магия прогроммирования' , 'Kahoooooooooot', 'Голуби нашли вас и пренисли вас обратно', 'Вжух Вжух, вы дома)', 'What\'s up', 'Какое чудное время. Технологии могут переместить вас на главное меню.', 'Колдунья не обманула вас это и вправду портал', 'Интересно если машины захватят мир, то будет ли этот бот во главе?', 'На сколько умён этот бот', 'IT квантУМ самый первый в "КванторУМ"']
 
 class AnswerAdmin(StatesGroup):
-    event = State() 
-  
+    event = State()
+
 
 
 async def hello(message):
@@ -84,11 +84,11 @@ async def get_id(message: types.Message):
 	current_news_title = WP.get_title(html_news)
 	current_news_url = WP.get_url(html_news)
 	await bot.send_message(message.chat.id, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
-	
+
 @dp.message_handler(commands =['get_id'])
 async def get_id(message: types.Message):
 	await message.answer(message.from_user.id)
-	
+
 @dp.message_handler(commands = ['admin_pan'])
 async def admin_pan_open(message: types.Message):
 	global admin
@@ -104,7 +104,7 @@ async def send_all(message: types.Message):
 	global admin
 	admin = False
 	if message.chat.id in admin_list:
-		
+
 		admin = True
 	if admin == True:
 		for user in subscriptions:
@@ -118,13 +118,13 @@ async def send_all(message: types.Message):
 
 @dp.message_handler(commands = ['start'])
 async def start(message: types.Message):
-	
+
 	global admin
 	admin = False
 	if message.chat.id in admin_list:
-		
+
 		admin = True
-		
+
 	await message.answer('Здравствуйте, добро пожаловать🖐.Это оффициальный бот тех.поддержки КванториУМа65🤖. Желаете продолжить?🤔', reply_markup = kb.inline_kb_start)
 @dp.message_handler(content_types = ['text'])
 async def get_text(message: types.Message):
@@ -156,18 +156,18 @@ async def get_text(message: types.Message):
 			ready = False #готовность равна лже т.к комманда только выполняется и ошибка не перехвачена
 
 		except  IOError:
-			
-			success = False #перехват ошибки 
+
+			success = False #перехват ошибки
 		finally:
 
 			ready = True #и если всё таки удалось найти файл, то его открываем
 
 		if success == True and ready == True: #если успех равен првде и готовность, то мы открываем и берём событие
-				
+
 			f = codecs.open('events.txt','r', 'utf_8_sig' )
 
 			fd = f.read()
-				
+
 			await bot.send_message(message.chat.id, fd.encode().decode('utf-8'))
 
 
@@ -186,10 +186,10 @@ async def get_text(message: types.Message):
 					await bot.send_message(message.chat.id, 'Вот наша подборка)')
 					for file in os.listdir('music/'):
 						if file.split('.')[-1] == 'mp3' or file.split('.')[-1] == 'ogg':
-							
+
 
 							audio = open('music/' + file, 'rb')
-							await bot.send_audio(message.chat.id, audio)	
+							await bot.send_audio(message.chat.id, audio)
 				elif music_count < 0:
 					await bot.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
 			elif check_file == False:
@@ -203,10 +203,10 @@ async def get_text(message: types.Message):
 	elif message.text == '↩️Назад':
 		await bot.send_message(message.chat.id, 'С возвращением', reply_markup = kb.moreInfo_kb)
 
-	
 
 
-	#админ комманды	
+
+	#админ комманды
 	if admin == True:
 		if message.text == 'Админ Панель':
 			await bot.send_message(message.chat.id, 'Вы в меню админа', reply_markup = kb.admin_kb)
@@ -226,7 +226,7 @@ async def answer (call: types.CallbackQuery):
 	admin = False
 	if call.message.chat.id in admin_list:
 		admin = True
-		
+
 	callback_data = call.data
 	#комманды обычных пользователей
 	if callback_data == 'yesStart':
@@ -245,7 +245,7 @@ async def answer (call: types.CallbackQuery):
 		for i in neudacha:
 			await call.bot.send_message(call.message.chat.id, i)
 			break
-	
+
 	elif callback_data == 'RSSon':
 		if(not db.subscriber_exists(call.message.chat.id)):
 		# если юзера нет в базе, добавляем его
@@ -253,11 +253,11 @@ async def answer (call: types.CallbackQuery):
 		else:
 		# если он уже есть, то просто обновляем ему статус подписки
 			db.update_subscription(call.message.chat.id, True)
-	
-		await call.message.answer("Вы успешно подписались на рассылку!")
-		
 
-	elif callback_data == 'RSSoff': 
+		await call.message.answer("Вы успешно подписались на рассылку!")
+
+
+	elif callback_data == 'RSSoff':
 		if(not db.subscriber_exists(call.message.chat.id)):
 		# если юзера нет в базе, добавляем его с неактивной подпиской (запоминаем)
 			db.add_subscriber(call.message.chat.id, False)
@@ -297,8 +297,8 @@ async def answer (call: types.CallbackQuery):
 				ready = False #готовность равна лже т.к комманда только выполняется и ошибка не перехвачена
 
 			except  IOError:
-				
-				success = False #перехват ошибки 
+
+				success = False #перехват ошибки
 			finally:
 
 				ready = True #и если всё таки удалось найти файл, то его открываем
@@ -326,8 +326,8 @@ async def answer (call: types.CallbackQuery):
 		elif callback_data == 'write_event':
 			await call.bot.send_message(call.message.chat.id, 'Введите ваше мероприятие/событие:' )
 			await AnswerAdmin.event.set()
-		
-		
+
+
 
 
 	await call.message.delete()
@@ -337,7 +337,3 @@ if __name__ == '__main__':
 	loop = asyncio.get_event_loop()
 	loop.create_task(check_updates(10))
 	executor.start_polling(dp, skip_updates = True)
-
-
-
-

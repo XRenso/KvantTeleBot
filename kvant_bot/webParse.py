@@ -1,10 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
+from fake_useragent import UserAgent
+
+ua = UserAgent()
+headers = {'accept': '*/*', 'user-agent': ua.firefox}
 news_url = 'http://kvantorium.iroso.ru/news'
 news_already = []
-def get_html(url):
-	result = requests.get(url)
+def get_html(url, headers):
+	response = requests.get(url, headers=headers)
+	if response.status_code == 200:
+		result = requests.get(url)
 	return result.text
 
 def get_title(html):
@@ -25,5 +31,3 @@ def main():
 	url = get_url(get_html('http://kvantorium.iroso.ru/news'))
 	print(url)
 main()
-
-
