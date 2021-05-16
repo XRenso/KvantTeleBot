@@ -7,7 +7,7 @@ ua = UserAgent()
 headers = {'accept': '*/*', 'user-agent': ua.firefox}
 news_url = 'http://kvantorium.iroso.ru/news'
 news_already = []
-def get_html(url, headers):
+def get_html(url):
 	response = requests.get(url, headers=headers)
 	if response.status_code == 200:
 		result = requests.get(url)
@@ -26,8 +26,3 @@ def get_data(html):
 	soup = BeautifulSoup(html, 'lxml')
 	data = soup.find('span', class_='short-news_date').text
 	return data
-
-def main():
-	url = get_url(get_html('http://kvantorium.iroso.ru/news'))
-	print(url)
-main()

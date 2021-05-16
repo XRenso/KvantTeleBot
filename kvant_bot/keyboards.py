@@ -20,8 +20,8 @@ button_rss_control = KeyboardButton('📰Управление подпиской
 button_it_info = KeyboardButton('💻IT-квантум💻')
 button_aero_info = KeyboardButton('✈️Аэроквантум✈️')
 button_design_info = KeyboardButton('🎨Промдизайнквантум🎨')
-button_energy_info = KeyboardButton('⚡Энерджиквантум⚡')	
-button_hitech_info = KeyboardButton('⚙️Хайтек⚙️') 
+button_energy_info = KeyboardButton('⚡Энерджиквантум⚡')
+button_hitech_info = KeyboardButton('⚙️Хайтек⚙️')
 button_geo_info = KeyboardButton('🗺️Геоквантум🗺️')
 button_back_on_more_info = KeyboardButton('↩️Назад')
 
@@ -65,7 +65,7 @@ inline_stayHereMenu = InlineKeyboardButton('Нет', callback_data = 'stayHere')
 
 
 #social
-inline_CreatorTelegram = InlineKeyboardButton('Telegram', url = 'https://t.me/XRenso')
+inline_CreatorTelegram = InlineKeyboardButton('Telegram Разработчика', url = 'https://t.me/XRenso')
 inline_social_inst = InlineKeyboardButton('Инстаграмм🤳', url = 'https://www.instagram.com/kvantorium_65/')
 inline_social_site = InlineKeyboardButton('Сайт🌎', url = 'http://kvantorium.iroso.ru')
 inline_rss_on = InlineKeyboardButton('Подписаться', callback_data= 'RSSon')

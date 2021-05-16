@@ -139,7 +139,7 @@ async def get_text(message: types.Message):
 	if message.text == '↩️На главное меню ↪️':
 		await bot.send_message(message.chat.id, 'Вы хотите вернутся на главное меню?', reply_markup = kb.inline_kb_mainMenu_back)
 	elif message.text == '™️Создатель©️':
-		await message.reply('Одерий Ярослав Александрович', reply_markup = kb.inline_kb_Creator)
+		await message.reply('BORCH Entertainment \nПрограммист - Одерий Ярослав Александрович', reply_markup = kb.inline_kb_Creator)
 	elif message.text == 'Номер тех.поддержки 📞':
 		await message.reply('+74242300277')
 	elif message.text == 'Мы в соц.сетях 📱':
