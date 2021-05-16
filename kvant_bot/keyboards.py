@@ -37,9 +37,18 @@ admin_button_delete_music = KeyboardButton('❌ Удалить музыку ❌'
 
 
 #кнопки КвантУМов
+########
     #IT
-it_info_btn = KeyboardButton('Про IT-квантУМ')
+it_info_btn = KeyboardButton('🔎 Про IT-квантУМ 🔎')
+it_tutor_btn = KeyboardButton('👩‍💻 Тьютеры 👨‍💻')
 
+
+#########
+    #общие кнопки КвантУМов
+back_to_kavnt_list_btn = KeyboardButton('⬅️ Назад к списку квантУМов ➡️')
+
+
+######################################################################
 #клавиатуры
 kvantum_choose_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(button_it_info,button_aero_info).add(button_design_info,button_energy_info).add(button_hitech_info,button_geo_info).add(button_back_on_more_info)
 
@@ -53,8 +62,11 @@ moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_ab
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True).row(button_num_techHelp,button_soccial)
 main_menu_kb.add(button_more_info).add(button_creator)
 
-
-
+####################################################################################
+#клавиатура квантУМов
+    #IT
+it_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(it_info_btn)
+it_info_kb.add(it_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
 
 
 #инлайн клавиатура

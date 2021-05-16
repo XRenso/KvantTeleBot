@@ -203,9 +203,14 @@ async def get_text(message: types.Message):
 	elif message.text == '↩️Назад':
 		await bot.send_message(message.chat.id, 'С возвращением', reply_markup = kb.moreInfo_kb)
 
-
-
-
+	elif message.text == '💻IT-квантум💻':
+		nice_to_meet_u = ['Вставай самурай время взломать этого бота!', 'Остановиста С++', 'Мир не сбыточных мечтаний', '"Понаберут программистов по объявлениям" Ковач Александра Александровна']
+		random.shuffle(nice_to_meet_u)
+		for i in nice_to_meet_u:
+			await bot.send_message(message.chat.id, i, reply_markup = kb.it_info_kb)
+			break
+	elif message.text == '⬅️ Назад к списку квантУМов ➡️':
+		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
 	#админ комманды
 	if admin == True:
 		if message.text == 'Админ Панель':
