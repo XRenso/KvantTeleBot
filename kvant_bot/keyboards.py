@@ -36,6 +36,10 @@ admin_button_delete_event = KeyboardButton('🚫 Удалить события �
 admin_button_delete_music = KeyboardButton('❌ Удалить музыку ❌')
 
 
+#кнопки КвантУМов
+    #IT
+it_info_btn = KeyboardButton('Про IT-квантУМ')
+
 #клавиатуры
 kvantum_choose_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(button_it_info,button_aero_info).add(button_design_info,button_energy_info).add(button_hitech_info,button_geo_info).add(button_back_on_more_info)
 
