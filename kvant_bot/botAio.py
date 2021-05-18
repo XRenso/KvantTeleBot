@@ -8,13 +8,14 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 import aiogram
 import asyncio
 import config
+##################################3
 
 #другие файлы Py из этого проекта
 import keyboards as kb
 import webParse as WP
 import kvantums_info as kinf
 
-
+##########################3
 import logging
 import random
 import os
