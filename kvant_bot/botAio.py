@@ -67,7 +67,7 @@ main_menu_meet =['🤯','Гном нашёл вас и привез обратн
 
 class AnswerAdmin(StatesGroup):
     event = State()
-	
+
 
 #запись полученного ответа пользователя в txt документ
 async def hello(message):
@@ -118,7 +118,6 @@ async def send_all(message: types.Message):
 	global admin
 	admin = False
 	if message.chat.id in admin_list:
-
 		admin = True
 	if admin == True:
 		for user in subscriptions:
