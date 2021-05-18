@@ -71,12 +71,14 @@ class AnswerAdmin(StatesGroup):
 
 
 async def hello(message):
-	#loop = asyncio.get_running_loop()
+	
 	with open('events.txt', 'w', encoding= 'utf-8') as f:
 		f.write(str(message.text))
 	events = message.text
 	await bot.send_message(message.chat.id, 'Событие добавлено')
-	#loop.finish()
+
+
+
 @dp.message_handler(state=AnswerAdmin.event)
 async def event_text(message: types.Message, state:FSMContext):
 	eventText = message
