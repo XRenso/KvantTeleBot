@@ -8,14 +8,20 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 import aiogram
 import asyncio
 import config
+
+#другие файлы Py из этого проекта
 import keyboards as kb
+import webParse as WP
+import kvantums_info as kinf
+
+
 import logging
 import random
 import os
 import codecs
 from sqlighter import SQLighter
 from datetime import datetime
-import webParse as WP
+
 news_url = 'http://kvantorium.iroso.ru/news'
 
 db = SQLighter('db.db')
@@ -211,6 +217,13 @@ async def get_text(message: types.Message):
 			break
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
+
+	elif message.text == '👩‍💻 Тьютеры 👨‍💻':
+		await message.reply(kinf.it_tutors)
+	elif message.text == '🔎 Про IT-квантУМ 🔎':
+		await message.reply(kinf.it_info)
+
+#######################################################################################3
 	#админ комманды
 	if admin == True:
 		if message.text == 'Админ Панель':
