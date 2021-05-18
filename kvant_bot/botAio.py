@@ -209,7 +209,7 @@ async def get_text(message: types.Message):
 		for i in nice_to_meet_u:
 			await bot.send_message(message.chat.id, i, reply_markup = kb.it_info_kb)
 			break
-	elif message.text == '⬅️ Назад к списку квантУМов ➡️':
+	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
 	#админ комманды
 	if admin == True:
