@@ -67,18 +67,18 @@ main_menu_meet =['🤯','Гном нашёл вас и привез обратн
 
 class AnswerAdmin(StatesGroup):
     event = State()
-
-
-
-async def hello(message):
 	
+
+#запись полученного ответа пользователя в txt документ
+async def hello(message):
+
 	with open('events.txt', 'w', encoding= 'utf-8') as f:
 		f.write(str(message.text))
 	events = message.text
 	await bot.send_message(message.chat.id, 'Событие добавлено')
 
 
-
+#Получение ответа от пользователя
 @dp.message_handler(state=AnswerAdmin.event)
 async def event_text(message: types.Message, state:FSMContext):
 	eventText = message
@@ -87,6 +87,7 @@ async def event_text(message: types.Message, state:FSMContext):
 	await hello(eventText)
 	await state.finish()
 
+#получение последних новостей
 @dp.message_handler(commands =['last_news'])
 async def get_id(message: types.Message):
 	html_news = WP.get_html(news_url)
@@ -94,10 +95,12 @@ async def get_id(message: types.Message):
 	current_news_url = WP.get_url(html_news)
 	await bot.send_message(message.chat.id, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
 
+#получение id чата
 @dp.message_handler(commands =['get_id'])
 async def get_id(message: types.Message):
 	await message.answer(message.from_user.id)
 
+#открытие админ панели при наличии прав администратора
 @dp.message_handler(commands = ['admin_pan'])
 async def admin_pan_open(message: types.Message):
 	global admin
@@ -107,6 +110,8 @@ async def admin_pan_open(message: types.Message):
 	if admin == True:
 		await bot.send_message(message.chat.id, 'Добро пожаловать в Админ панель', reply_markup = kb.admin_kb)
 
+
+#сделать рассылку пользователям
 @dp.message_handler(commands = ['send_all'])
 async def send_all(message: types.Message):
 	subscriptions = db.get_subscriptions()
@@ -124,7 +129,7 @@ async def send_all(message: types.Message):
 			except aiogram.utils.exceptions.CantTalkWithBots:
 				continue
 
-
+#комманда начала работы с ботом
 @dp.message_handler(commands = ['start'])
 async def start(message: types.Message):
 
@@ -135,6 +140,8 @@ async def start(message: types.Message):
 		admin = True
 
 	await message.answer('Здравствуйте, добро пожаловать🖐.Это оффициальный бот тех.поддержки КванториУМа65🤖. Желаете продолжить?🤔', reply_markup = kb.inline_kb_start)
+
+#получние текстовых комманд
 @dp.message_handler(content_types = ['text'])
 async def get_text(message: types.Message):
 	global events
