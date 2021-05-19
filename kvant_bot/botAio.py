@@ -227,7 +227,7 @@ async def get_text(message: types.Message):
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
 
-	elif message.text == '👩‍💻 Тьютеры 👨‍💻':
+	elif message.text == '👩‍💻 Наставники 👨‍💻':
 		await message.reply(kinf.it_tutors)
 	elif message.text == '🔎 Про IT-квантУМ 🔎':
 		await message.reply(kinf.it_info)
@@ -362,5 +362,5 @@ async def answer (call: types.CallbackQuery):
 
 if __name__ == '__main__':
 	loop = asyncio.get_event_loop()
-	loop.create_task(check_updates(10))
+	loop.create_task(check_updates(120))
 	executor.start_polling(dp, skip_updates = True)
