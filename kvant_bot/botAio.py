@@ -224,13 +224,36 @@ async def get_text(message: types.Message):
 		for i in nice_to_meet_u:
 			await bot.send_message(message.chat.id, i, reply_markup = kb.it_info_kb)
 			break
+	elif message.text == '👩‍💻 Наставники 👨‍💻':
+		await message.reply(kinf.it_tutors)
+	elif message.text == '🔎 Про IT-квантум 🔎':
+		await message.reply(kinf.it_info)
+
+	elif message.text == '🤖Промробоквантум🤖':
+		robo_meet = ['Робот сочинит симфонию? Робот превратит кусок холста в шедевр искусства?', 'Робот не может причинить вреда человеку, если только он не докажет, что в конечном счёте это будет полезно для всего человечества.', 'Робот не может причинить вреда человеку или своим бездействием допустить, чтобы человеку был причинен вред.']
+		random.shuffle(robo_meet)
+		for i in robo_meet:
+			await bot.send_message(message.chat.id, i, reply_markup = kb.robo_info_kb)
+			break
+	elif message.text == '✈️Аэроквантум✈️':
+		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.aero_info_kb)
+		
+	elif message.text == '🎨Промдизайнквантум🎨':
+		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.design_info_kb)
+
+	elif message.text == '⚡Энерджиквантум⚡':
+		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.energy_info_kb)
+
+	elif message.text == '⚙️Хайтек⚙️':
+		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.hitech_info_kb)
+
+	elif message.text == '🗺️Геоквантум🗺️':
+		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.geo_info_kb)
+
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
 
-	elif message.text == '👩‍💻 Наставники 👨‍💻':
-		await message.reply(kinf.it_tutors)
-	elif message.text == '🔎 Про IT-квантУМ 🔎':
-		await message.reply(kinf.it_info)
+
 
 #######################################################################################3
 	#админ комманды

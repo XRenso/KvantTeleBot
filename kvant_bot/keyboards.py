@@ -40,8 +40,27 @@ admin_button_delete_music = KeyboardButton('❌ Удалить музыку ❌'
 #кнопки КвантУМов
 ########
     #IT
-it_info_btn = KeyboardButton('🔎 Про IT-квантУМ 🔎')
+it_info_btn = KeyboardButton('🔎 Про IT-квантум 🔎')
 it_tutor_btn = KeyboardButton('👩‍💻 Наставники 👨‍💻')
+
+    #Robo
+robo_info_btn = KeyboardButton('🔎 Про Промробоквантум 🔎')
+robo_tutor_btn = KeyboardButton('👩‍💼 Наставники 👨‍💼')
+    #Prom
+design_info_btn = KeyboardButton('🔎 Про Промдизайнквантум 🔎')
+design_tutor_btn = KeyboardButton('🧑‍🎨 Наставники 👨‍🎨')
+    #Aero
+aero_info_btn = KeyboardButton('🔎 Про Аэроквантум 🔎')
+aero_tutor_btn = KeyboardButton('👷‍♀️ Наставники 👷‍♂️')
+    #Energy
+energy_info_btn = KeyboardButton('🔎 Про Энерджиквантум 🔎')
+energy_tutor_btn = KeyboardButton('👩‍🎓 Наставники 👨‍🎓')
+    #HiTech
+hitech_info_btn = KeyboardButton('🔎 Про Хайтек 🔎')
+hitech_tutor_btn = KeyboardButton('👩‍🔧 Наставники 👨‍🔧')
+    #Geo
+geo_info_btn = KeyboardButton('🔎 Про Хайтек 🔎')
+geo_tutor_btn = KeyboardButton('👩‍🏫 Наставники 👨‍🏫')
 
 
 #########
@@ -69,7 +88,20 @@ main_menu_kb.add(button_more_info).add(button_creator)
 it_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(it_info_btn)
 it_info_kb.add(it_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
 
+    #Robo
+robo_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(robo_info_btn).add(robo_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
+    #Prom
+design_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(design_info_btn).add(design_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
+    #Aero
+aero_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(aero_info_btn).add(aero_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
+    #Energy
+energy_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(energy_info_btn).add(energy_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
+    #HiTech
+hitech_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(hitech_info_btn).add(hitech_tutor_btn).row(back_to_kavnt_list_btn, button_on_main_menu)
+    #Geo
+geo_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(geo_info_btn).add(geo_tutor_btn).add(back_to_kavnt_list_btn,button_on_main_menu)
 
+##########################################################################
 #инлайн клавиатура
 
 #start
