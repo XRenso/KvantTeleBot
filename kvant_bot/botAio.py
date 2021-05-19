@@ -235,20 +235,40 @@ async def get_text(message: types.Message):
 		for i in robo_meet:
 			await bot.send_message(message.chat.id, i, reply_markup = kb.robo_info_kb)
 			break
+
+	elif message.text == '🔎 Про Промробоквантум 🔎':
+		await message.reply(kinf.robo_info)
+
 	elif message.text == '✈️Аэроквантум✈️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.aero_info_kb)
-		
+
+	elif message.text == '🔎 Про Аэроквантум 🔎':
+		await message.reply(kinf.aero_info)
+
+
 	elif message.text == '🎨Промдизайнквантум🎨':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.design_info_kb)
+
+	elif message.text == '🔎 Про Промдизайнквантум 🔎':
+		await message.reply(kinf.design_info)
 
 	elif message.text == '⚡Энерджиквантум⚡':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.energy_info_kb)
 
+	elif message.text == '🔎 Про Энерджиквантум 🔎':
+		await message.reply(kinf.energy_info)
+
 	elif message.text == '⚙️Хайтек⚙️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.hitech_info_kb)
 
+	elif message.text == '🔎 Про Хайтек 🔎':
+		await message.reply(kinf.hitech_info)
+
 	elif message.text == '🗺️Геоквантум🗺️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.geo_info_kb)
+
+	elif message.text == '🔎 Про Геоквантум 🔎':
+		await message.reply(kinf.geo_info)
 
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)

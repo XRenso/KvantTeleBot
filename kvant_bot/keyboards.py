@@ -59,7 +59,7 @@ energy_tutor_btn = KeyboardButton('👩‍🎓 Наставники 👨‍🎓'
 hitech_info_btn = KeyboardButton('🔎 Про Хайтек 🔎')
 hitech_tutor_btn = KeyboardButton('👩‍🔧 Наставники 👨‍🔧')
     #Geo
-geo_info_btn = KeyboardButton('🔎 Про Хайтек 🔎')
+geo_info_btn = KeyboardButton('🔎 Про Геоквантум 🔎')
 geo_tutor_btn = KeyboardButton('👩‍🏫 Наставники 👨‍🏫')
 
 
