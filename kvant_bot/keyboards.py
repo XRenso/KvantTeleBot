@@ -18,7 +18,7 @@ button_rss_control = KeyboardButton('📰Управление подпиской
 
 #клавиатура выбора квантума
 button_it_info = KeyboardButton('💻IT-квантум💻')
-button_robo_info = KeyboardButton('🤖 Промробоквантум 🤖')
+button_robo_info = KeyboardButton('🤖Промробоквантум🤖')
 button_aero_info = KeyboardButton('✈️Аэроквантум✈️')
 button_design_info = KeyboardButton('🎨Промдизайнквантум🎨')
 button_energy_info = KeyboardButton('⚡Энерджиквантум⚡')
