@@ -13,7 +13,7 @@ button_Admin = KeyboardButton('Админ Панель')
 button_more_info = KeyboardButton('Информация о Кванториум - Сахалин ℹ️')
 button_on_main_menu = KeyboardButton('↩️На главное меню ↪️')
 button_rss_control = KeyboardButton('📰Управление подпиской на новости📰')
-
+button_info_about_rukvo = KeyboardButton('🧑‍💼 Руководство ДТ "Кванториум" ГБОУ ИРОСО 🧑‍💼')
 
 
 #клавиатура выбора квантума
@@ -77,7 +77,7 @@ kvantum_choose_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(button_it_in
 admin_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(admin_button_add_event, admin_button_delete_event)
 admin_kb.add(button_on_main_menu)
 
-moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_aboutKvant).row(moreInfo_button_kvants,moreInfo_button_events).row(button_rss_control).row(button_on_main_menu)
+moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_aboutKvant).row(moreInfo_button_kvants,moreInfo_button_events).row(button_info_about_rukvo).row(button_rss_control).row(button_on_main_menu)
 
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True).row(button_num_techHelp,button_soccial)
 main_menu_kb.add(button_more_info).add(button_creator)

@@ -68,6 +68,29 @@ main_menu_meet =['🤯','Гном нашёл вас и привез обратн
 class AnswerAdmin(StatesGroup):
     event = State()
 
+@dp.message_handler(commands =['send_all_photo'])
+async def get_id(message):
+	await get_photo_to_send_admin(message)
+	try:
+		photo = open('./rss.jpg', 'rb')
+	except OSError:
+		await get_photo_to_send_admin(message)
+	subscriptions = db.get_subscriptions()
+	global admin
+	admin = False
+	if message.chat.id in admin_list:
+		admin = True
+	if admin == True:
+		for user in subscriptions:
+			try:
+				await bot.send_photo(user[1], './rss.jpg' ,caption = message.text)
+			except aiogram.utils.exceptions.BotBlocked:
+				continue
+			except aiogram.utils.exceptions.CantTalkWithBots:
+				continue
+@dp.message_handler(content_types=['photo'])
+async def get_photo_to_send_admin(message):
+	await message.photo[-1].download('rss.jpg')
 
 #запись полученного ответа пользователя в txt документ
 async def hello(message):
@@ -272,7 +295,9 @@ async def get_text(message: types.Message):
 
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
-
+	elif message.text == '🧑‍💼 Руководство ДТ "Кванториум" ГБОУ ИРОСО 🧑‍💼':
+		photo = open('./Artem_Sidorov-1.jpg', 'rb')
+		await bot.send_photo(message.chat.id, photo , caption = 'Сидоров Артем Витальевич' + '\nДиректор детского технопарка' + '\nНаименование направления подготовки и (или) специальности:' + '\nФГБОУ ВО «Сахалинский государственный университет» Институт экономики и востоковедения, бакалавр востоковедения, африканистики (японский язык), \nг. Южно-Сахалинск, 2014 г. \nФГБОУ ВО «Сахалинский государственный университет», магистратура по направлению подготовки «Педагогическое образование», магистр, \nг. Южно-Сахалинск, 2016 г.')
 
 
 #######################################################################################3
