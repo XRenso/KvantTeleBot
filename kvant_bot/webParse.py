@@ -13,6 +13,11 @@ def get_html(url):
 		result = requests.get(url)
 	return result.text
 
+def get_date(html):
+	soup = BeautifulSoup(html, 'lxml')
+	date = soup.find('span',{'class':'short-news_date'}).text
+	return date
+
 def get_title(html):
 	soup = BeautifulSoup(html, 'lxml')
 	title = soup.find('h5').text

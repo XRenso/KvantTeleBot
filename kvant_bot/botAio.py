@@ -3,8 +3,9 @@ from aiogram import Bot, types
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.utils import executor
-from aiogram.utils.markdown import text
+from aiogram.utils.markdown import text, bold, italic, code, pre
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.types import ParseMode, InputMediaPhoto, InputMediaVideo, ChatActions
 import aiogram
 import asyncio
 import config
@@ -32,15 +33,15 @@ async def check_updates(wait_for):
 		await asyncio.sleep(wait_for)
 		html_news = WP.get_html(news_url)
 		subscriptions = db.get_subscriptions()
-		current_news_title = WP.get_title(html_news)
 		current_news_url = WP.get_url(html_news)
 		f = codecs.open('lastData.txt','r', 'utf_8_sig' )
 		last_news_url = f.read()
-
 		if last_news_url != current_news_url:
+			current_news_date = WP.get_date(html_news)
+			current_news_title = WP.get_title(html_news)
 			for s in subscriptions:
 				try:
-					await bot.send_message(s[1], current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
+					await bot.send_message(s[1], current_news_title + italic('\nДата новости: ') + current_news_date, parse_mode = ParseMode.MARKDOWN, reply_markup = kb.inline_kb_news(current_news_url))
 				except aiogram.utils.exceptions.BotBlocked:
 					continue
 			with open('lastData.txt', 'w', encoding= 'utf-8') as f:
@@ -114,9 +115,10 @@ async def event_text(message: types.Message, state:FSMContext):
 @dp.message_handler(commands =['last_news'])
 async def get_id(message: types.Message):
 	html_news = WP.get_html(news_url)
+	current_news_date = WP.get_date(html_news)
 	current_news_title = WP.get_title(html_news)
 	current_news_url = WP.get_url(html_news)
-	await bot.send_message(message.chat.id, current_news_title, reply_markup = kb.inline_kb_news(current_news_url))
+	await bot.send_message(message.chat.id, current_news_title + italic('\nДата новости: ') + current_news_date, parse_mode = ParseMode.MARKDOWN, reply_markup = kb.inline_kb_news(current_news_url))
 
 #получение id чата
 @dp.message_handler(commands =['get_id'])
@@ -185,6 +187,8 @@ async def get_text(message: types.Message):
 	elif message.text == 'Информация о Кванториум - Сахалин ℹ️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию.', reply_markup = kb.moreInfo_kb)
 
+	elif message.text == '©️Партнёры™️':
+		await bot.send_message(message.chat.id, bold('Наши партнёры:'), parse_mode = ParseMode.MARKDOWN, reply_markup = kb.inline_kb_sponsors)
 	elif message.text == '🎟️ МЕРОПРИЯТИЕ 🎟️':
 		success = True # успех изначально равен Правде чтобы не было проблем
 		ready = False # готовность чтобы код не выполнялся паралелльно
@@ -213,27 +217,7 @@ async def get_text(message: types.Message):
 			await bot.send_message(message.chat.id, 'Сейчас нет каких либо мероприятий😥')
 
 	elif message.text == '📜Общая информация про КванториУМ65.📜':
-		await bot.send_message(message.chat.id,'Привет👋, наш КванториУМ самый первый🥇 на острове Сахалин, вы представляете?! Это же круто быть одними из первых, мы с открытия (2017 год) обучаем детей и помогаем им узнавать новое в жизни. У нас имеется 7 КвантУМов, много разных педагогов с которыми вы сможете приятно провести время за обучением.' )
-
-	elif message.text == '🎵Подборка музыки от КванториУМа🎵':
-			check_file = os.path.exists('music')
-			path = './music'
-			music_count = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
-			if check_file == True:
-				if music_count > 0:
-					await bot.send_message(message.chat.id, 'Вот наша подборка)')
-					for file in os.listdir('music/'):
-						if file.split('.')[-1] == 'mp3' or file.split('.')[-1] == 'ogg':
-
-
-							audio = open('music/' + file, 'rb')
-							await bot.send_audio(message.chat.id, audio)
-				elif music_count < 0:
-					await bot.send_message(message.chat.id, 'К сожелению сейчас подборка отсутвует😥')
-			elif check_file == False:
-				path = './music/'
-				await bot.send_message(call.message.chat.id, 'Музыка отсутвует😥')
-				os.mkdir(path)
+		await bot.send_message(message.chat.id,bold('Миссия') + ' - ' + kinf.kvant_mission + bold('\nЦель') + ' - ' + kinf.kvant_aim, parse_mode = ParseMode.MARKDOWN)
 	elif message.text == '📰Управление подпиской на новости📰':
 		await bot.send_message(message.chat.id, 'Выберите что вы хотите сделать?', reply_markup = kb.inline_kb_RSS)
 	elif message.text == '🖥КвантУМы🖥':
@@ -261,6 +245,8 @@ async def get_text(message: types.Message):
 
 	elif message.text == '🔎 Про Промробоквантум 🔎':
 		await message.reply(kinf.robo_info)
+	elif message.text == '👩‍💼 Наставники 👨‍💼':
+		await message.reply(kinf.robo_tutors)
 
 	elif message.text == '✈️Аэроквантум✈️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.aero_info_kb)
@@ -268,33 +254,44 @@ async def get_text(message: types.Message):
 	elif message.text == '🔎 Про Аэроквантум 🔎':
 		await message.reply(kinf.aero_info)
 
+	elif message.text == '👷‍♀️ Наставники 👷‍♂️':
+		await message.reply(kinf.aero_tutors)
 
 	elif message.text == '🎨Промдизайнквантум🎨':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.design_info_kb)
 
 	elif message.text == '🔎 Про Промдизайнквантум 🔎':
 		await message.reply(kinf.design_info)
+	elif message.text == '🧑‍🎨 Наставники 👨‍🎨':
+		await message.reply(kinf.design_tutors)
 
 	elif message.text == '⚡Энерджиквантум⚡':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.energy_info_kb)
 
 	elif message.text == '🔎 Про Энерджиквантум 🔎':
 		await message.reply(kinf.energy_info)
+	elif message.text == '👩‍🎓 Наставники 👨‍🎓':
+		await message.reply(kinf.energy_tutors)
 
 	elif message.text == '⚙️Хайтек⚙️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.hitech_info_kb)
 
 	elif message.text == '🔎 Про Хайтек 🔎':
 		await message.reply(kinf.hitech_info)
+	elif message.text == '👩‍🔧 Наставники 👨‍🔧':
+		await message.reply(kinf.hitech_tutors)
 
 	elif message.text == '🗺️Геоквантум🗺️':
 		await bot.send_message(message.chat.id, 'Выберите интересующую вас информацию', reply_markup = kb.geo_info_kb)
 
 	elif message.text == '🔎 Про Геоквантум 🔎':
 		await message.reply(kinf.geo_info)
-
+	elif message.text == '👩‍🏫 Наставники 👨‍🏫':
+		await message.reply(kinf.geo_tutors)
 	elif message.text == '⬅️ Назад к квантУМам ➡️':
 		await bot.send_message(message.chat.id, 'Выберите квантУМ', reply_markup = kb.kvantum_choose_kb)
+
+
 	elif message.text == '🧑‍💼 Руководство ДТ "Кванториум" ГБОУ ИРОСО 🧑‍💼':
 		photo = open('./Artem_Sidorov-1.jpg', 'rb')
 		await bot.send_photo(message.chat.id, photo , caption = 'Сидоров Артем Витальевич' + '\nДиректор детского технопарка' + '\nНаименование направления подготовки и (или) специальности:' + '\nФГБОУ ВО «Сахалинский государственный университет» Институт экономики и востоковедения, бакалавр востоковедения, африканистики (японский язык), \nг. Южно-Сахалинск, 2014 г. \nФГБОУ ВО «Сахалинский государственный университет», магистратура по направлению подготовки «Педагогическое образование», магистр, \nг. Южно-Сахалинск, 2016 г.')
@@ -422,11 +419,10 @@ async def answer (call: types.CallbackQuery):
 			await call.bot.send_message(call.message.chat.id, 'Введите ваше мероприятие/событие:' )
 			await AnswerAdmin.event.set()
 
-
-
-
-	await call.message.delete()
-
+	if callback_data != 'None_site':
+		await call.message.delete()
+	if callback_data == 'None_site':
+		await call.bot.send_message(call.message.chat.id, 'К сожелению здесь сайт отсутвует😥')
 
 if __name__ == '__main__':
 	loop = asyncio.get_event_loop()

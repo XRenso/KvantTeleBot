@@ -15,7 +15,7 @@ button_on_main_menu = KeyboardButton('↩️На главное меню ↪️'
 button_rss_control = KeyboardButton('📰Управление подпиской на новости📰')
 button_info_about_rukvo = KeyboardButton('🧑‍💼 Руководство ДТ "Кванториум" ГБОУ ИРОСО 🧑‍💼')
 
-
+button_sponsors = KeyboardButton('©️Партнёры™️')
 #клавиатура выбора квантума
 button_it_info = KeyboardButton('💻IT-квантум💻')
 button_robo_info = KeyboardButton('🤖Промробоквантум🤖')
@@ -80,7 +80,7 @@ admin_kb.add(button_on_main_menu)
 moreInfo_kb = ReplyKeyboardMarkup(resize_keyboard = True).row(moreInfo_button_aboutKvant).row(moreInfo_button_kvants,moreInfo_button_events).row(button_info_about_rukvo).row(button_rss_control).row(button_on_main_menu)
 
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True).row(button_num_techHelp,button_soccial)
-main_menu_kb.add(button_more_info).add(button_creator)
+main_menu_kb.add(button_more_info).row(button_creator,button_sponsors)
 
 ####################################################################################
 #клавиатура квантУМов
@@ -104,6 +104,24 @@ geo_info_kb = ReplyKeyboardMarkup(resize_keyboard = True).add(geo_info_btn).add(
 ##########################################################################
 #инлайн клавиатура
 
+
+#sponsors
+edu_sponsor = InlineKeyboardButton('Агентство стратегических инициатив', url = 'https://edu.asi.ru/')
+energy_sponsor = InlineKeyboardButton('Сахалин Энерджи', url = 'http://sakhalinenergy.ru/')
+krilion_sponsor = InlineKeyboardButton('Крильон-сервис', callback_data = 'None_site')
+sakh_energo_sponsor = InlineKeyboardButton('Сахалинэнерго', url = 'http://sakh.rao-esv.ru/')
+botan_sad_sponsor = InlineKeyboardButton('Сахалинский филиал Ботанического сада-института ДВО РАН', url = 'http://botsad.ru/menu/aboutus/sahalinskij-filial/')
+kb_bridge_sponsor = InlineKeyboardButton('Учебный центр КБ Бридж', url = 'https://kb-bridge.com/')
+ocvvr_sponsor = InlineKeyboardButton('ГБОУДО «Областной центр внешкольной воспитательной работы»', url = 'https://ocvvr.com/')
+science_lib_sponsor = InlineKeyboardButton('ГБУК «Сахалинская областная универсальная научная библиотека»', url = 'http://www.libsakh.ru/')
+portal_sponsor = InlineKeyboardButton('Батутный парк Портал', callback_data = 'None_site')
+ya_sam_sponsor = InlineKeyboardButton('Детский центр раннего развития «ЯСам»', url = 'http://yasamsakhalin.ru/')
+blockchein_sponsor = InlineKeyboardButton('Блокчейн Системы', url = 'https://blockchain-systems.ru/')
+gs_sponsor = InlineKeyboardButton('GS group', url = 'https://gsgroup.it/')
+
+inline_kb_sponsors = InlineKeyboardMarkup().add(edu_sponsor).add(energy_sponsor).add(krilion_sponsor)
+inline_kb_sponsors.add(sakh_energo_sponsor).add(botan_sad_sponsor).add(kb_bridge_sponsor).add(ocvvr_sponsor)
+inline_kb_sponsors.add(science_lib_sponsor).add(portal_sponsor).add(ya_sam_sponsor).add(blockchein_sponsor).add(gs_sponsor)
 #start
 inline_continueMenu = InlineKeyboardButton('Да', callback_data = 'yesStart')
 inline_notContinueMenu = InlineKeyboardButton('Нет', callback_data = 'noStart')
