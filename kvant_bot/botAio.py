@@ -52,7 +52,7 @@ async def check_updates(wait_for):
 
 bot = Bot(token = config.token)
 dp = Dispatcher(bot, storage=MemoryStorage())
-'Вставай
+
 
 
 admin_list = [483058216, 1495232168]
